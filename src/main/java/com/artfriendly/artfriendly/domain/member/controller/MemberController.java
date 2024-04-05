@@ -10,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("members")
@@ -28,5 +31,12 @@ public class MemberController {
     public RspTemplate<Void> updateMember(@AuthenticationPrincipal long memberId, @Valid @RequestBody MemberUpdateReqDto updateReqDto) {
         memberService.updateMember(updateReqDto, memberId);
         return new RspTemplate<>(HttpStatus.OK, "멤버 정보 수정");
+    }
+
+    @PatchMapping("/images")
+    public RspTemplate<Void> updateMemberImage(@AuthenticationPrincipal long memberId,
+                                               @RequestPart(value = "file", required = false) MultipartFile image) throws IOException {
+        memberService.updateMemberImage(image, memberId);
+        return new RspTemplate<>(HttpStatus.OK, "멤버 이미지 수정");
     }
 }

@@ -22,8 +22,8 @@ public class Member extends BaseTimeEntity {
     @Column(unique = true) // email 컬럼 인덱스 처리
     private String email;
 
-    @Column
-    private String imageUrl;
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
+    private MemberImage image;
 
     @Column
     private String nickName;
@@ -32,10 +32,10 @@ public class Member extends BaseTimeEntity {
     private List<String> role = new ArrayList<>();
 
     @Builder
-    public Member(Long id, String email, String imageUrl, String nickName, List<String> role) {
+    public Member(Long id, String email, String nickName, MemberImage image, List<String> role) {
         this.id = id;
         this.email = email;
-        this.imageUrl = imageUrl;
+        this.image = image;
         this.nickName = nickName;
         this.role = role;
     }
@@ -43,4 +43,5 @@ public class Member extends BaseTimeEntity {
     public void updateForm(Member memberToUpdate) {
         this.nickName = memberToUpdate.getNickName();
     }
+    public void setImage(MemberImage memberImage) { this.image = memberImage; }
 }
