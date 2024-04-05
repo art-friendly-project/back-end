@@ -52,7 +52,7 @@ cloud:
 # 파일 경로 이름 설정
 file:
   path:
-    images:
+    images: user_Image/
 
 # JWT 관련 설정
 jwt:

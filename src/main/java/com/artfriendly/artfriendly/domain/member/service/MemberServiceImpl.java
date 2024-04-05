@@ -3,8 +3,10 @@ package com.artfriendly.artfriendly.domain.member.service;
 import com.artfriendly.artfriendly.domain.auth.dto.OAuth2Attributes;
 import com.artfriendly.artfriendly.domain.member.dto.MemberUpdateReqDto;
 import com.artfriendly.artfriendly.domain.member.entity.Member;
+import com.artfriendly.artfriendly.domain.member.entity.MemberImage;
 import com.artfriendly.artfriendly.domain.member.mapper.MemberMapper;
 import com.artfriendly.artfriendly.domain.member.repository.MemberRepository;
+import com.artfriendly.artfriendly.domain.s3.service.S3Service;
 import com.artfriendly.artfriendly.global.exception.common.BusinessException;
 import com.artfriendly.artfriendly.global.exception.common.ErrorCode;
 import com.artfriendly.artfriendly.global.utils.CustomAuthorityUtils;
@@ -13,7 +15,9 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Primary
@@ -24,6 +28,7 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final CustomAuthorityUtils customAuthorityUtils;
     private final MemberMapper memberMapper;
+    private final S3Service s3Service;
 
     @Override
     @Transactional
@@ -43,9 +48,16 @@ public class MemberServiceImpl implements MemberService {
         Member member = Member.builder()
                 .email(email)
                 .nickName(nickname)
-                .imageUrl(imageUrl)
                 .role(customAuthorityUtils.createUserRoles())
                 .build();
+
+        MemberImage memberImage = MemberImage.builder()
+                .fileName("Kakao_Image")
+                .imageUrl(imageUrl)
+                .member(member)
+                .build();
+
+        member.setImage(memberImage);
         return memberRepository.save(member);
     }
 
@@ -60,6 +72,23 @@ public class MemberServiceImpl implements MemberService {
     public void updateMember(MemberUpdateReqDto memberUpdateReqDto, long memberId) {
         Member member = findById(memberId);
         member.updateForm(memberMapper.memberUpdateReqDtoToMember(memberUpdateReqDto));
+    }
+
+    @Override
+    @Transactional
+    public void updateMemberImage(MultipartFile image, long memberId) throws IOException {
+        Member member = findById(memberId);
+        MemberImage memberImage = member.getImage();
+
+        // 기본 이미지 삭제(카카오톡 프로필 사진 제외)
+        if(!memberImage.getFileName().equals("Kakao_Image")) {
+            s3Service.deleteImageByFileName(memberImage.getFileName());
+        }
+
+        String fileName = s3Service.fileUpLoad(image);
+        String imageUrl = s3Service.getImageUrl(fileName);
+
+        memberImage.updateForm(imageUrl, fileName);
     }
 
     private Optional<Member> findOptionalMemberByEmail(String email) {
