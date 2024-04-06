@@ -49,6 +49,9 @@ public enum ErrorCode {
     DATETIME_IS_NULL(401, "DateTime이 NULL값입니다."),
     DATE_IS_NULL(401, "Date가 NULL값입니다."),
 
+    //인코딩 에러
+    UNSUPPORTED_ENCODING_DATA(401, "인코딩 할 수 없는 데이터입니다."),
+
     // Team
     TEAM_NOT_FOUND(404, "팀이 존재하지 않습니다."),
     TEAM_UPDATE_DENIED(403, "팀 수정 권한이 없습니다."),

@@ -60,6 +60,12 @@ jwt:
   access-token-expiration-minutes: 360
   refresh-token-expiration-minutes: 43200
 
+exhibition:
+  api:
+    duration: http://www.culture.go.kr/openapi/rest/publicperformancedisplays/period
+    credentials:
+      service-key: ${API_SERVICEKEY}
+
 # 스레드 풀 설정
 server:
   tomcat:
