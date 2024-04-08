@@ -49,6 +49,16 @@ public enum ErrorCode {
     DATETIME_IS_NULL(401, "DateTime이 NULL값입니다."),
     DATE_IS_NULL(401, "Date가 NULL값입니다."),
 
+    // Dambyeolag
+    DAMBYEOLAG_NOT_FOUND(404, "담벼락이 존재하지 않습니다."),
+    DAMBYEOLAG_NOT_ACCESS(403, "해당 담벼락 관련 권한이 없습니다"),
+    DAMBYEOLAGBOOKMARK_NOT_FOUND(404, "해당 북마크가 존재하지 않습니다."),
+    DAMBYEOLAGBOOKMARK_NOT_ACCESS(403, "해당 북마크 관련 권한이 없습니다"),
+
+    // Sticker
+    STICKER_NOT_FOUND(404, "스티커가 존재하지 않습니다."),
+    STICKER_NOT_ACCESS(403, "해당 스티커 관련 권한이 없습니다"),
+
     // Team
     TEAM_NOT_FOUND(404, "팀이 존재하지 않습니다."),
     TEAM_UPDATE_DENIED(403, "팀 수정 권한이 없습니다."),
