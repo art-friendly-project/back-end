@@ -20,7 +20,7 @@ public class MemberImage {
     @Column
     private String fileName;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     Member member;
 
