@@ -17,6 +17,6 @@ public interface DambyeolagRepository extends JpaRepository<Dambyeolag, Long> {
     @Query("SELECT d FROM Dambyeolag d LEFT JOIN d.stickerList s LEFT JOIN d.bookmarkList m " +
             "WHERE d.exhibitionId = :exhibitionId " +
             "GROUP BY d " +
-            "ORDER BY SUM(COUNT(s), COUNT(m)) DESC")
+            "ORDER BY (COUNT(s) + COUNT(m)) DESC")
     Page<Dambyeolag> findByOrderByStickerCountDesc(Pageable pageable, @Param("exhibitionId") long exhibitionId);
 }
