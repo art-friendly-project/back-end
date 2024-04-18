@@ -59,7 +59,7 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
-// CI할 때(빌드 시 )jar 파일이 두개 생성되는 것을 막기 위한 코드
-jar {
-	enabled = false
+// 중복 파일의 경우 제외한다
+bootJar {
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
