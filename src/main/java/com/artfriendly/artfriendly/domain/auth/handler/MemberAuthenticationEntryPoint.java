@@ -1,6 +1,5 @@
 package com.artfriendly.artfriendly.domain.auth.handler;
 
-import com.artfriendly.artfriendly.global.exception.common.AppServiceException;
 import com.artfriendly.artfriendly.global.exception.common.ErrorCode;
 import com.artfriendly.artfriendly.global.utils.ErrorResponder;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -33,7 +32,7 @@ public class MemberAuthenticationEntryPoint implements AuthenticationEntryPoint 
         else if(exception instanceof SignatureException)
             ErrorResponder.sendErrorResponse(response, request, ErrorCode.INVALID_SIGNATURE, exception); // 서명이 잘못된 토큰일 시
         else if(exception == null)
-            ErrorResponder.sendErrorResponse(response, request, ErrorCode.NOT_EXISTS_AUTH_HEADER, exception); // 헤더에 토큰이 없을 시
+            ErrorResponder.sendErrorResponse(response, request, ErrorCode.NOT_EXISTS_AUTH_HEADER, null); // 헤더에 토큰이 없을 시
         else
             ErrorResponder.sendErrorResponse(response, request, ErrorCode.NOT_VALID_TOKEN, exception);
 

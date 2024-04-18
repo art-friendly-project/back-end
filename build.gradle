@@ -50,6 +50,10 @@ dependencies {
 	// AWS S3 라이브러리
 	implementation 'io.awspring.cloud:spring-cloud-aws-s3:3.0.2'
 
+	// xml 바인딩 라이브러리
+	implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0'
+	runtimeOnly 'com.sun.xml.bind:jaxb-impl:4.0.0'
+
 }
 
 tasks.named('test') {

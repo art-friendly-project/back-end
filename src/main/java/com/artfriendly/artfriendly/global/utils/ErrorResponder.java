@@ -35,14 +35,17 @@ public class ErrorResponder {
                     e.getClass().getSimpleName(), e.getMessage(), request.getMethod(), request.getRequestURI());
     }
 
+    public static void printLog(Exception e) {
+        log.error("발생 예외: {}, 에러 메시지: {}", e.getClass().getSimpleName(), e.getMessage());
+    }
+
     private static ErrorResponseDto<String> createErrorResponseDto(ErrorCode errorCode) {
         int statusCode = errorCode.getStatusCode();
         HttpStatus httpStatus = HttpStatus.valueOf(statusCode);
 
-        ErrorResponseDto<String> errDto = new ErrorResponseDto<>(
+        return new ErrorResponseDto<>(
                 statusCode
                 , httpStatus
                 , errorCode.getMessage());
-        return errDto;
     }
 }

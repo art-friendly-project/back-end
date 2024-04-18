@@ -4,6 +4,7 @@ import com.artfriendly.artfriendly.domain.dambyeolag.dto.dambyeolag.DambyeolagDe
 import com.artfriendly.artfriendly.domain.dambyeolag.dto.dambyeolag.DambyeolagReqDto;
 import com.artfriendly.artfriendly.domain.dambyeolag.dto.dambyeolag.DambyeolagRspDto;
 import com.artfriendly.artfriendly.domain.dambyeolag.entity.Dambyeolag;
+import com.artfriendly.artfriendly.domain.exhibition.entity.Exhibition;
 import com.artfriendly.artfriendly.domain.member.entity.Member;
 import com.artfriendly.artfriendly.domain.member.mapper.MemberMapper;
 import org.mapstruct.Mapper;
@@ -26,12 +27,12 @@ public interface DambyeolagMapper {
         );
     }
 
-    default Dambyeolag dambyeolagReqDtoToDambyeolag(DambyeolagReqDto dambyeolagReqDto, Member member) {
+    default Dambyeolag dambyeolagReqDtoToDambyeolag(DambyeolagReqDto dambyeolagReqDto, Member member, Exhibition exhibition) {
         return Dambyeolag.builder()
                 .title(dambyeolagReqDto.title())
                 .body(dambyeolagReqDto.body())
                 .member(member)
-                .exhibitionId(dambyeolagReqDto.exhibitionId())
+                .exhibition(exhibition)
                 .build();
     }
 

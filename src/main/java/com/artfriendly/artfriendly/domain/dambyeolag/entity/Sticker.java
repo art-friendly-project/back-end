@@ -21,7 +21,7 @@ public class Sticker {
     @Column(nullable = false)
     private int yCoordinate;
 
-    @Column(nullable = true)
+    @Column
     private String body;
 
     @ManyToOne

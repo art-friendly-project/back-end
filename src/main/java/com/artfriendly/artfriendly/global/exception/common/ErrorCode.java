@@ -49,15 +49,34 @@ public enum ErrorCode {
     DATETIME_IS_NULL(401, "DateTime이 NULL값입니다."),
     DATE_IS_NULL(401, "Date가 NULL값입니다."),
 
+    // utils/LocalDateFormatter
+    WRONG_DATE_FORMAT(401, "잘못된 DateTimeFormatter 입니다."),
+
+    //인코딩 에러
+    UNSUPPORTED_ENCODING_DATA(401, "인코딩 할 수 없는 데이터입니다."),
+
     // Dambyeolag
     DAMBYEOLAG_NOT_FOUND(404, "담벼락이 존재하지 않습니다."),
-    DAMBYEOLAG_NOT_ACCESS(403, "해당 담벼락 관련 권한이 없습니다"),
+    DAMBYEOLAG_NOT_ACCESS(403, "해당 담벼락 관련 권한이 없습니다."),
     DAMBYEOLAGBOOKMARK_NOT_FOUND(404, "해당 북마크가 존재하지 않습니다."),
-    DAMBYEOLAGBOOKMARK_NOT_ACCESS(403, "해당 북마크 관련 권한이 없습니다"),
+    DAMBYEOLAGBOOKMARK_NOT_ACCESS(403, "해당 북마크 관련 권한이 없습니다."),
 
     // Sticker
     STICKER_NOT_FOUND(404, "스티커가 존재하지 않습니다."),
-    STICKER_NOT_ACCESS(403, "해당 스티커 관련 권한이 없습니다"),
+    STICKER_NOT_ACCESS(403, "해당 스티커 관련 권한이 없습니다."),
+
+    // ApiIntegration 에러
+    API_CALL_FAILED(401, "API 호출에 실패했습니다."),
+    API_INTEGRATE_FAILED(401, "API 연동에 실패했습니다.(멀티 스레드)"),
+
+    // Exhibition 에러
+    EXHIBITION_NOT_FOUND(404, "해당 전시 정보를 찾을 수 없습니다."),
+    EXIST_EXHIBITIONLIKE(400, "이미 좋아요가 추가되어 있습니다."),
+    NOT_EXIST_EXHIBITIONLIKE(400, "해당 좋아요 정보가 없습니다."),
+    HOPEINDEX_NOT_FOUND(404, "해당 희망 Index가 없습니다"),
+    EXIST_EXHIBITIONHOPE(400, "이미 전시 희망 사항이 추가되어 있습니다."),
+    NOT_EXIST_EXHIBITIONHOPE(400, "해당 희망 사항 정보가 없습니다"),
+    SAME_EXHIBITIONHOPE(400, "이미 동일한 희망 사항이 적용되어있습니다."),
 
     // Team
     TEAM_NOT_FOUND(404, "팀이 존재하지 않습니다."),
