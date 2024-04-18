@@ -1,11 +1,15 @@
 package com.artfriendly.artfriendly.domain.exhibition.entity;
 
+import com.artfriendly.artfriendly.domain.dambyeolag.entity.Dambyeolag;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -15,33 +19,43 @@ public class Exhibition {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private int seq;
+    @Column
+    @NotNull
+    private Double temperature;
 
-    @Column(nullable = false)
-    private String title;
+    @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
+    List<ExhibitionHope> exhibitionHopeList = new ArrayList<>();
 
-    @Column(nullable = false)
-    private LocalDate startDate;
+    @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
+    List<ExhibitionView> exhibitionViewList = new ArrayList<>();
 
-    @Column(nullable = false)
-    private LocalDate endDate;
+    @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
+    List<ExhibitionLike> exhibitionLikeList = new ArrayList<>();
 
-    @Column(nullable = false)
-    private String place;
+    @OneToOne(mappedBy = "exhibition", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    ExhibitionInfo exhibitionInfo;
 
-    @Column(nullable = false)
-    private String realmName;
+    @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<Dambyeolag> dambyeolagList;
 
-    @Column(nullable = false)
-    private String area;
+    @Builder
+    public Exhibition(Long id, List<ExhibitionHope> exhibitionHopeList, List<ExhibitionView> exhibitionViewList, List<ExhibitionLike> exhibitionLikeList, ExhibitionInfo exhibitionInfo) {
+        this.id = id;
+        this.temperature = 0.0;
+        this.exhibitionHopeList = exhibitionHopeList;
+        this.exhibitionViewList = exhibitionViewList;
+        this.exhibitionLikeList = exhibitionLikeList;
+        this.exhibitionInfo = exhibitionInfo;
+    }
 
-    @Column(nullable = false)
-    private String thumbnail;
+    public void updateTemperature() {
+        Double viewPoint = this.exhibitionViewList.size() * 0.1;
+        Double likePoint = this.exhibitionLikeList.size() * 0.5;
+        Double hopePoint = this.exhibitionHopeList.stream().mapToDouble(exhibitionHope -> exhibitionHope.getHope().getHopeRating()).sum();
 
-    @Column(nullable = false)
-    private String gpsX;
+        double totalPoint = viewPoint + likePoint + hopePoint;
 
-    @Column(nullable = false)
-    private String gpsY;
+        this.temperature = Math.max(totalPoint, 0.0);
+
+    }
 }

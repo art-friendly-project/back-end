@@ -1,6 +1,7 @@
 package com.artfriendly.artfriendly.domain.dambyeolag.entity;
 
 import com.artfriendly.artfriendly.domain.common.BaseTimeEntity;
+import com.artfriendly.artfriendly.domain.exhibition.entity.Exhibition;
 import com.artfriendly.artfriendly.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -22,7 +23,7 @@ public class Dambyeolag extends BaseTimeEntity {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     private String body;
 
     // 연관관계 설정
@@ -37,18 +38,16 @@ public class Dambyeolag extends BaseTimeEntity {
     List<Sticker> stickerList = new ArrayList<>();
 
     // 전시 정보 연동 추가해야함
-    @Column(nullable = false)
-    private Long exhibitionId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "exhibition_id")
+    Exhibition exhibition;
 
     @Builder
-    public Dambyeolag(Long id, String title, String body, Member member, Long exhibitionId) {
+    public Dambyeolag(Long id, String title, String body, Member member, Exhibition exhibition) {
         this.id = id;
         this.title = title;
         this.body = body;
         this.member = member;
-        this.exhibitionId = exhibitionId;
+        this.exhibition = exhibition;
     }
-
-    public void addBookmark(DambyeolagBookmark bookmark) { this.bookmarkList.add(bookmark); }
-    public void addSticker(Sticker sticker) { this.stickerList.add(sticker); }
 }

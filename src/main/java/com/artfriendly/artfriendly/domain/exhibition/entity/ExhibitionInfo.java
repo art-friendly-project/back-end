@@ -1,0 +1,120 @@
+package com.artfriendly.artfriendly.domain.exhibition.entity;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
+
+@Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class ExhibitionInfo {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true, updatable = false)
+    @NotNull
+    private int seq;
+
+    @Column
+    @NotBlank
+    private String title;
+
+    @Column
+    @NotNull
+    private LocalDate startDate;
+
+    @Column
+    @NotNull
+    private LocalDate endDate;
+
+    @Column
+    @NotBlank
+    private String place;
+
+    @Column
+    @NotBlank
+    private String realmName;
+
+    @Column
+    @NotBlank
+    private String area;
+
+    @Column(length = 1000)
+    @NotBlank
+    private String imageUrl;
+
+    @Column
+    @NotNull
+    private double gpsX;
+
+    @Column
+    @NotNull
+    private double gpsY;
+
+    @Column(length = 1500)
+    @NotNull
+    private String ticketingUrl;
+
+    @Column
+    @NotBlank
+    private String phone;
+
+    @Column(nullable = false)
+    @NotBlank
+    private String price;
+
+    @Column
+    @NotNull
+    private String placeAddr;
+
+    @OneToOne
+    @JoinColumn(name = "exhibition_id")
+    private Exhibition exhibition;
+
+    @Builder
+    public ExhibitionInfo(Long id, int seq, String title, LocalDate startDate, LocalDate endDate, String place, String realmName, String area, String imageUrl, double gpsX, double gpsY, String ticketingUrl, String phone, String price, String placeAddr) {
+        this.id = id;
+        this.seq = seq;
+        this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.place = place;
+        this.realmName = realmName;
+        this.area = area;
+        this.imageUrl = imageUrl;
+        this.gpsX = gpsX;
+        this.gpsY = gpsY;
+        this.ticketingUrl = ticketingUrl;
+        this.phone = phone;
+        this.price = price;
+        this.placeAddr = placeAddr;
+    }
+
+    public void updateForm(ExhibitionInfo updateExhibitionInfo) {
+        this.title = updateExhibitionInfo.getTitle();
+        this.startDate = updateExhibitionInfo.getStartDate();
+        this.endDate = updateExhibitionInfo.getEndDate();
+        this.place = updateExhibitionInfo.getPlace();
+        this.realmName = updateExhibitionInfo.getRealmName();
+        this.area = updateExhibitionInfo.getArea();
+        this.imageUrl = updateExhibitionInfo.getImageUrl();
+        this.gpsX = updateExhibitionInfo.getGpsX();
+        this.gpsY = updateExhibitionInfo.getGpsY();
+        this.ticketingUrl = updateExhibitionInfo.getTicketingUrl();
+        this.phone = updateExhibitionInfo.getPhone();
+        this.price = updateExhibitionInfo.getPrice();
+        this.placeAddr = updateExhibitionInfo.getPlaceAddr();
+    }
+
+    public void setExhibition(Exhibition exhibition) {
+        this.exhibition = exhibition;
+    }
+
+}

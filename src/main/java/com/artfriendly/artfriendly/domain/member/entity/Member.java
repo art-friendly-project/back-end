@@ -1,6 +1,12 @@
 package com.artfriendly.artfriendly.domain.member.entity;
 
 import com.artfriendly.artfriendly.domain.common.BaseTimeEntity;
+import com.artfriendly.artfriendly.domain.dambyeolag.entity.Dambyeolag;
+import com.artfriendly.artfriendly.domain.dambyeolag.entity.DambyeolagBookmark;
+import com.artfriendly.artfriendly.domain.dambyeolag.entity.Sticker;
+import com.artfriendly.artfriendly.domain.exhibition.entity.ExhibitionLike;
+import com.artfriendly.artfriendly.domain.exhibition.entity.ExhibitionHope;
+import com.artfriendly.artfriendly.domain.exhibition.entity.ExhibitionView;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -30,6 +36,20 @@ public class Member extends BaseTimeEntity {
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> role = new ArrayList<>();
+
+    // 연관관계
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<Dambyeolag> dambyeolagList = new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<DambyeolagBookmark> dambyeolagBookmarkList = new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<Sticker> stickerList = new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<ExhibitionLike> exhibitionLikeList = new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<ExhibitionHope> exhibitionHopeList = new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<ExhibitionView> exhibitionViewList = new ArrayList<>();
 
     @Builder
     public Member(Long id, String email, String nickName, MemberImage image, List<String> role) {

@@ -10,6 +10,8 @@ import com.artfriendly.artfriendly.domain.dambyeolag.mapper.DambyeolagMapper;
 import com.artfriendly.artfriendly.domain.dambyeolag.mapper.StickerMapper;
 import com.artfriendly.artfriendly.domain.dambyeolag.repository.DambyeolagBookmarkRepository;
 import com.artfriendly.artfriendly.domain.dambyeolag.repository.DambyeolagRepository;
+import com.artfriendly.artfriendly.domain.exhibition.entity.Exhibition;
+import com.artfriendly.artfriendly.domain.exhibition.service.ExhibitionService;
 import com.artfriendly.artfriendly.domain.member.entity.Member;
 import com.artfriendly.artfriendly.domain.member.mapper.MemberMapper;
 import com.artfriendly.artfriendly.domain.member.service.MemberService;
@@ -30,6 +32,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class DambyeolagServiceImpl implements DambyeolagService {
     private final MemberService memberService;
+    private final ExhibitionService exhibitionService;
     private final DambyeolagRepository dambyeolagRepository;
     private final DambyeolagBookmarkRepository dambyeolagBookmarkRepository;
     private final DambyeolagMapper dambyeolagMapper;
@@ -60,7 +63,8 @@ public class DambyeolagServiceImpl implements DambyeolagService {
     @Transactional
     public void createDambyeolag(DambyeolagReqDto dambyeolagReqDto, long memberId) {
         Member member = memberService.findById(memberId);
-        Dambyeolag newDambyeolag = dambyeolagMapper.dambyeolagReqDtoToDambyeolag(dambyeolagReqDto, member);
+        Exhibition exhibition = exhibitionService.findExhibitionById(dambyeolagReqDto.exhibitionId());
+        Dambyeolag newDambyeolag = dambyeolagMapper.dambyeolagReqDtoToDambyeolag(dambyeolagReqDto, member, exhibition);
 
         dambyeolagRepository.save(newDambyeolag);
     }

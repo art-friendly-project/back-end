@@ -35,7 +35,7 @@ public class JwtTokenizer {
         String refreshToken = generateRefreshToken(member.getId().toString());
 
         return TokenResponse.builder()
-                .authScheme("BEARER")
+                .authScheme("Bearer")
                 .accessToken(accessToken)
                 .accessTokenExp(getTokenExpiration(this.accessTokenExpirationMinutes))
                 .refreshToken(refreshToken)
@@ -80,11 +80,10 @@ public class JwtTokenizer {
     public Jws<Claims> getClaims(String jws, String secretKey) {
         Key key = createHmacShaKeyFromSecretKey(secretKey);
 
-        Jws<Claims> claims = Jwts.parserBuilder()
+        return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
                 .parseClaimsJws(jws);
-        return claims;
     }
 
     // refreshToken 검증 할 때 사용되는 것
@@ -100,9 +99,8 @@ public class JwtTokenizer {
     private Date getTokenExpiration(int expirationMinutes) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, expirationMinutes);
-        Date expiration = calendar.getTime();
 
-        return expiration;
+        return calendar.getTime();
     }
 
     public String getSecretKey() {
@@ -111,8 +109,6 @@ public class JwtTokenizer {
 
     private Key createHmacShaKeyFromSecretKey(String secretKey) {
         byte[] keyBytes = secretKey.getBytes();
-        Key key = Keys.hmacShaKeyFor(keyBytes);
-
-        return key;
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 }

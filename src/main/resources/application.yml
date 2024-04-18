@@ -27,7 +27,8 @@ spring:
             client-secret: ${KAKAO_CLIENT_SECRET}
             client-name: Kakao
             authorization-grant-type: authorization_code
-            redirect-uri: "https://artfriendly.duckdns.org/login/oauth2/code/kakao" #"http://localhost:8080/login/oauth2/code/kakao"
+            redirect-uri: "https://artfriendly.duckdns.org/login/oauth2/code/kakao"
+            #redirect-uri: "http://localhost:8080/login/oauth2/code/kakao"
             client-authentication-method: client_secret_post
         provider:
           kakao:
@@ -61,8 +62,12 @@ jwt:
   refresh-token-expiration-minutes: 43200
 
 exhibition:
+  code:
+    art: D000
   api:
     duration: http://www.culture.go.kr/openapi/rest/publicperformancedisplays/period
+    details: http://www.culture.go.kr/openapi/rest/publicperformancedisplays/d/
+    realm: http://www.culture.go.kr/openapi/rest/publicperformancedisplays/realm
     credentials:
       service-key: ${API_SERVICEKEY}
 
