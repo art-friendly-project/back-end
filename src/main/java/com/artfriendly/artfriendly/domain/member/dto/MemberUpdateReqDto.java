@@ -1,9 +1,10 @@
 package com.artfriendly.artfriendly.domain.member.dto;
 
-import jakarta.validation.constraints.NotNull;
+import java.util.List;
 
 public record MemberUpdateReqDto(
-    @NotNull
-    String nickName
+    String nickName,
+    List<String> artPreferenceTypeList,
+    Long mbtiId
 ) {
 }

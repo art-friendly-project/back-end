@@ -21,7 +21,7 @@ public class Sticker {
     @Column(nullable = false)
     private int yCoordinate;
 
-    @Column
+    @Column(nullable = false)
     private String body;
 
     @ManyToOne
@@ -33,7 +33,7 @@ public class Sticker {
     private Dambyeolag dambyeolag;
 
     // 이미지 연관관계
-
+    // 이미지 타입
     @Builder
     public Sticker(Long id, int xCoordinate, int yCoordinate, String body, Member member, Dambyeolag dambyeolag) {
         this.id = id;

@@ -16,7 +16,7 @@ public class ExhibitionScheduler {
     String artRealmCode;
 
     // 매일 24:00 마다 오늘로 부터 6개월의 미술 전시 데이터를 연동한다.
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")
     public void integrationExhibition() {
         apiIntegrationService.integrateExhibitionInfo(LocalDate.now(), 6, artRealmCode);
     }
