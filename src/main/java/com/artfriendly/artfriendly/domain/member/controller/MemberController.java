@@ -1,8 +1,7 @@
 package com.artfriendly.artfriendly.domain.member.controller;
 
-import com.artfriendly.artfriendly.domain.member.dto.MemberResponseDto;
+import com.artfriendly.artfriendly.domain.member.dto.MemberDetailsRspDto;
 import com.artfriendly.artfriendly.domain.member.dto.MemberUpdateReqDto;
-import com.artfriendly.artfriendly.domain.member.mapper.MemberMapper;
 import com.artfriendly.artfriendly.domain.member.service.MemberService;
 import com.artfriendly.artfriendly.global.api.RspTemplate;
 import jakarta.validation.Valid;
@@ -18,13 +17,12 @@ import java.io.IOException;
 @RequestMapping("members")
 @RequiredArgsConstructor
 public class MemberController {
-    private final MemberMapper memberMapper;
     private final MemberService memberService;
 
     @GetMapping
-    public RspTemplate<MemberResponseDto> getMember(@AuthenticationPrincipal long memberId) {
-        MemberResponseDto memberResponseDto = memberMapper.memberToMemberResponseDto(memberService.findById(memberId));
-        return new RspTemplate<>(HttpStatus.OK, "멤버 정보", memberResponseDto);
+    public RspTemplate<MemberDetailsRspDto> getMember(@AuthenticationPrincipal long memberId) {
+        MemberDetailsRspDto memberDetailsRspDto = memberService.getMemberDetailsRspDto(memberId);
+        return new RspTemplate<>(HttpStatus.OK, "멤버 정보", memberDetailsRspDto);
     }
 
     @PatchMapping
@@ -35,7 +33,7 @@ public class MemberController {
 
     @PatchMapping("/images")
     public RspTemplate<Void> updateMemberImage(@AuthenticationPrincipal long memberId,
-                                               @RequestPart(value = "file", required = false) MultipartFile image) throws IOException {
+                                               @RequestPart(value = "profileImage") MultipartFile image) throws IOException {
         memberService.updateMemberImage(image, memberId);
         return new RspTemplate<>(HttpStatus.OK, "멤버 이미지 수정");
     }

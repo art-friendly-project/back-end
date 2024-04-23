@@ -78,6 +78,12 @@ public enum ErrorCode {
     NOT_EXIST_EXHIBITIONHOPE(400, "해당 희망 사항 정보가 없습니다"),
     SAME_EXHIBITIONHOPE(400, "이미 동일한 희망 사항이 적용되어있습니다."),
 
+    // Mbti 에러
+    MBTI_NOT_FOUND(404, "해당 MBTI 정보를 찾을 수 없습니다."),
+
+    // 전시 취향 에러
+    ARTPREFERENCE_NOT_FOUND(404, "해당 전시 취향 정보를 찾을 수 없습니다."),
+
     // Team
     TEAM_NOT_FOUND(404, "팀이 존재하지 않습니다."),
     TEAM_UPDATE_DENIED(403, "팀 수정 권한이 없습니다."),

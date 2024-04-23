@@ -61,6 +61,7 @@ jwt:
   access-token-expiration-minutes: 360
   refresh-token-expiration-minutes: 43200
 
+# api 연동 관련 설정
 exhibition:
   code:
     art: D000
@@ -70,6 +71,9 @@ exhibition:
     realm: http://www.culture.go.kr/openapi/rest/publicperformancedisplays/realm
     credentials:
       service-key: ${API_SERVICEKEY}
+
+profile:
+  default-image: https://github.com/art-friendly-project/back-end/assets/68217405/f7d7d440-fde4-4d0d-b4fe-e3a4fa75d9bb
 
 # 스레드 풀 설정
 server:

@@ -5,9 +5,13 @@ import com.artfriendly.artfriendly.domain.mbti.dto.MbtiRspDto;
 import com.artfriendly.artfriendly.domain.mbti.entity.Mbti;
 import com.artfriendly.artfriendly.domain.mbti.mapper.MbtiMapper;
 import com.artfriendly.artfriendly.domain.mbti.repository.MbtiRepository;
+import com.artfriendly.artfriendly.global.exception.common.BusinessException;
+import com.artfriendly.artfriendly.global.exception.common.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -19,6 +23,11 @@ public class MbtiService {
     public MbtiRspDto getMbtiRspDtoByMbtiType(String mbtiType) {
         Mbti mbti = mbtiRepository.findByMbtiType(mbtiType);
         return mbtiMapper.mbtiToMbtiRspDto(mbti);
+    }
+
+    public Mbti findMbtiById(long mbtiId) {
+        Optional<Mbti> mbti = mbtiRepository.findById(mbtiId);
+        return mbti.orElseThrow(() -> new BusinessException(ErrorCode.MBTI_NOT_FOUND));
     }
 
     @Transactional

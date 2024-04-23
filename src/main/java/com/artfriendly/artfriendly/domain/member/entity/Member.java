@@ -7,6 +7,7 @@ import com.artfriendly.artfriendly.domain.dambyeolag.entity.Sticker;
 import com.artfriendly.artfriendly.domain.exhibition.entity.ExhibitionLike;
 import com.artfriendly.artfriendly.domain.exhibition.entity.ExhibitionHope;
 import com.artfriendly.artfriendly.domain.exhibition.entity.ExhibitionView;
+import com.artfriendly.artfriendly.domain.mbti.entity.Mbti;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -34,8 +35,15 @@ public class Member extends BaseTimeEntity {
     @Column
     private String nickName;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mbti_id")
+    private Mbti mbti;
+
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> role = new ArrayList<>();
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    private List<String> artPreferenceTypeList = new ArrayList<>();
 
     // 연관관계
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -52,16 +60,24 @@ public class Member extends BaseTimeEntity {
     List<ExhibitionView> exhibitionViewList = new ArrayList<>();
 
     @Builder
-    public Member(Long id, String email, String nickName, MemberImage image, List<String> role) {
+    public Member(Long id, String email, String nickName, MemberImage image, List<String> role, List<String> artPreferenceTypeList, Mbti mbti) {
         this.id = id;
         this.email = email;
         this.image = image;
         this.nickName = nickName;
         this.role = role;
+        this.artPreferenceTypeList = artPreferenceTypeList;
+        this.mbti = mbti;
     }
 
     public void updateForm(Member memberToUpdate) {
-        this.nickName = memberToUpdate.getNickName();
+        this.nickName = memberToUpdate.getNickName() == null ? this.nickName : memberToUpdate.getNickName();
+        // 입력 받은 전시 취향이 존재하는가
+        for(String type : memberToUpdate.artPreferenceTypeList) {
+            ArtPreferenceType.fromString(type);
+        }
+        this.artPreferenceTypeList = memberToUpdate.artPreferenceTypeList == null ? this.artPreferenceTypeList : memberToUpdate.artPreferenceTypeList;
+        this.mbti = memberToUpdate.mbti == null ? this.mbti : memberToUpdate.mbti;
     }
     public void setImage(MemberImage memberImage) { this.image = memberImage; }
 }
