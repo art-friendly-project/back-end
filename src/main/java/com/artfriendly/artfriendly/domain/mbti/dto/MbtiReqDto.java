@@ -4,7 +4,6 @@ public record MbtiReqDto(
         String mbtiType,
         String subTitle,
         String title,
-        String percentage,
         String body,
         String imageUrl,
         String matchType,
