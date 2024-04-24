@@ -4,17 +4,19 @@ import com.artfriendly.artfriendly.domain.mbti.dto.MbtiReqDto;
 import com.artfriendly.artfriendly.domain.mbti.dto.MbtiRspDto;
 import com.artfriendly.artfriendly.domain.mbti.dto.MbtiSimpleRspDto;
 import com.artfriendly.artfriendly.domain.mbti.entity.Mbti;
-import org.mapstruct.Mapper;
+import com.artfriendly.artfriendly.domain.mbti.service.MbtiService;
+import org.mapstruct.*;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {MbtiService.class})
 public interface MbtiMapper {
-    default MbtiRspDto mbtiToMbtiRspDto(Mbti mbti) {
+
+    default MbtiRspDto mbtiToMbtiRspDto(Mbti mbti, String percentage) {
         return new MbtiRspDto(
                 mbti.getId(),
                 mbti.getMbtiType(),
                 mbti.getSubTitle(),
                 mbti.getTitle(),
-                mbti.getPercentage(),
+                percentage,
                 mbti.getBody(),
                 mbti.getImageUrl(),
                 mbtiToMbtiSimpleRspDto(mbti.getMatchType()),
@@ -28,8 +30,7 @@ public interface MbtiMapper {
         return Mbti.builder()
                 .mbtiType(mbtiReqDto.mbtiType())
                 .subTitle(mbtiReqDto.subTitle())
-                .title(mbtiReqDto.subTitle())
-                .percentage(mbtiReqDto.percentage())
+                .title(mbtiReqDto.title())
                 .body(mbtiReqDto.body())
                 .imageUrl(mbtiReqDto.imageUrl())
                 .matchType(matchType)

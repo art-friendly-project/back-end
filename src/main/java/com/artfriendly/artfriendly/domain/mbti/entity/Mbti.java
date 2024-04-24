@@ -1,10 +1,13 @@
 package com.artfriendly.artfriendly.domain.mbti.entity;
 
+import com.artfriendly.artfriendly.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,29 +27,29 @@ public class Mbti {
     private String title;
 
     @Column(nullable = false)
-    private String percentage;
-
-    @Column(nullable = false)
     private String body;
 
     @Column(nullable = false)
     private String imageUrl;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "match_type")
     private Mbti matchType;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "miss_match_type")
     private Mbti missMatchType;
 
+    // 연관관계
+    @OneToMany(mappedBy = "mbti", fetch = FetchType.LAZY)
+    List<Member> memberList;
+
     @Builder
-    public Mbti(Long id, String mbtiType, String subTitle, String title, String percentage, String body, String imageUrl, Mbti matchType, Mbti missMatchType) {
+    public Mbti(Long id, String mbtiType, String subTitle, String title, String body, String imageUrl, Mbti matchType, Mbti missMatchType) {
         this.id = id;
         this.mbtiType = mbtiType;
         this.subTitle = subTitle;
         this.title = title;
-        this.percentage = percentage;
         this.body = body;
         this.imageUrl = imageUrl;
         this.matchType = matchType;
