@@ -1,8 +1,8 @@
 spring:
   # 데이터 베이스 관련 설정
   datasource:
-    url: jdbc:mysql://localhost:3306/artfriendly?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
-    #url: jdbc:mysql://database-1.cn0mmqiaop3v.ap-northeast-2.rds.amazonaws.com/artfriendly?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    #url: jdbc:mysql://localhost:3306/artfriendly?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://database-1.cn0mmqiaop3v.ap-northeast-2.rds.amazonaws.com/artfriendly?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -27,8 +27,8 @@ spring:
             client-secret: ${KAKAO_CLIENT_SECRET}
             client-name: Kakao
             authorization-grant-type: authorization_code
-            #redirect-uri: "https://artfriendly.duckdns.org/login/oauth2/code/kakao"
-            redirect-uri: "http://localhost:8080/login/oauth2/code/kakao"
+            redirect-uri: "https://artfriendly.duckdns.org/login/oauth2/code/kakao"
+            #redirect-uri: "http://localhost:8080/login/oauth2/code/kakao"
             client-authentication-method: client_secret_post
         provider:
           kakao:
