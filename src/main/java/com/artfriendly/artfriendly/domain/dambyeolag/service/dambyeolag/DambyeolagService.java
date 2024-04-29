@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 
 public interface DambyeolagService {
     DambyeolagDetailsRspDto getDetailsDambyeolag(long memberId, long dambyeolagId);
-    Page<DambyeolagRspDto> getDambyeolagPageOrderByStickerDesc(int page, long exhibitionId);
+    Page<DambyeolagRspDto> getDambyeolagPageOrderBySortType(int page, long exhibitionId, String sortType);
     void createDambyeolag(DambyeolagReqDto dambyeolagReqDto, long memberId);
     void deleteDambyeolag(long memberId, long dambyeolagId);
     Dambyeolag findById(long dambyeolagId);

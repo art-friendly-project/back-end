@@ -31,10 +31,10 @@ public enum ArtPreferenceType {
         this.description = description;
     }
 
-    public static ArtPreferenceType fromString(String text) {
-        for (ArtPreferenceType b : ArtPreferenceType.values()) {
-            if (b.description.equalsIgnoreCase(text)) {
-                return b;
+    public static void check(String text) {
+        for (ArtPreferenceType artPreferenceType : ArtPreferenceType.values()) {
+            if (artPreferenceType.description.equals(text)) {
+                return;
             }
         }
         throw new BusinessException(ErrorCode.ARTPREFERENCE_NOT_FOUND);
