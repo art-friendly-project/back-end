@@ -74,7 +74,7 @@ public class Member extends BaseTimeEntity {
         this.nickName = memberToUpdate.getNickName() == null ? this.nickName : memberToUpdate.getNickName();
         // 입력 받은 전시 취향이 존재하는가
         for(String type : memberToUpdate.artPreferenceTypeList) {
-            ArtPreferenceType.fromString(type);
+            ArtPreferenceType.check(type);
         }
         this.artPreferenceTypeList = memberToUpdate.artPreferenceTypeList == null ? this.artPreferenceTypeList : memberToUpdate.artPreferenceTypeList;
         this.mbti = memberToUpdate.mbti == null ? this.mbti : memberToUpdate.mbti;

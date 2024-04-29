@@ -16,13 +16,11 @@ public class Sticker {
     private Long id;
 
     @Column(nullable = false)
-    private int xCoordinate;
-
-    @Column(nullable = false)
-    private int yCoordinate;
-
-    @Column(nullable = false)
     private String body;
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(nullable = false)
+    private StickerType stickerType;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
@@ -32,14 +30,11 @@ public class Sticker {
     @JoinColumn(name = "dambyeolag_id")
     private Dambyeolag dambyeolag;
 
-    // 이미지 연관관계
-    // 이미지 타입
     @Builder
-    public Sticker(Long id, int xCoordinate, int yCoordinate, String body, Member member, Dambyeolag dambyeolag) {
+    public Sticker(Long id, String body, StickerType stickerType, Member member, Dambyeolag dambyeolag) {
         this.id = id;
-        this.xCoordinate = xCoordinate;
-        this.yCoordinate = yCoordinate;
         this.body = body;
+        this.stickerType = stickerType;
         this.member = member;
         this.dambyeolag = dambyeolag;
     }

@@ -32,8 +32,8 @@ public class DambyeolagController {
     }
 
     @GetMapping("/lists")
-    public RspTemplate<Page<DambyeolagRspDto>> getDambyeolags(@NotNull int page, @NotNull long exhibitionId) {
-        Page<DambyeolagRspDto> dambyeolagRspDtos = dambyeolagService.getDambyeolagPageOrderByStickerDesc(page, exhibitionId);
+    public RspTemplate<Page<DambyeolagRspDto>> getDambyeolags(@NotNull int page, @NotNull long exhibitionId, String sortType) {
+        Page<DambyeolagRspDto> dambyeolagRspDtos = dambyeolagService.getDambyeolagPageOrderBySortType(page, exhibitionId, sortType);
         return new RspTemplate<>(HttpStatus.OK, "담벼락 "+page+"페이지 조회", dambyeolagRspDtos);
     }
 
@@ -43,8 +43,8 @@ public class DambyeolagController {
         return new RspTemplate<>(HttpStatus.OK, "담벼락 id: "+dambyeolagId+" 삭제");
     }
     @DeleteMapping("/bookmarks")
-    public RspTemplate<Void> deleteBookmark(@AuthenticationPrincipal long memberId, long bookmarkId) {
-        dambyeolagService.deleteBookmark(memberId, bookmarkId);
+    public RspTemplate<Void> deleteBookmark(@AuthenticationPrincipal long memberId, long dambyeolagId) {
+        dambyeolagService.deleteBookmark(memberId, dambyeolagId);
         return new RspTemplate<>(HttpStatus.OK, "북마크 해제");
     }
 

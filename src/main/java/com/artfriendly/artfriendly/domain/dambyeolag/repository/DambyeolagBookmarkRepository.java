@@ -6,9 +6,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DambyeolagBookmarkRepository extends JpaRepository<DambyeolagBookmark, Long> {
     @Query("SELECT d FROM DambyeolagBookmark d " +
             "WHERE d.dambyeolag.id = :dambyeolagId")
     List<DambyeolagBookmark> findDambyeolagBookmarkByDambyeolagId(@Param("dambyeolagId") long dambyeolagId);
+
+    Optional<DambyeolagBookmark> findDambyeolagBookmarkByDambyeolagIdAndMemberId(long dambyeolagId, long memberId);
 }

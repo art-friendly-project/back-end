@@ -52,11 +52,27 @@ public class DambyeolagServiceImpl implements DambyeolagService {
 
     // 해당 전시 담벼락 조회
     @Override
-    public Page<DambyeolagRspDto> getDambyeolagPageOrderByStickerDesc(int page, long exhibitionId) {
+    public Page<DambyeolagRspDto> getDambyeolagPageOrderBySortType(int page, long exhibitionId, String sortType) {
         Pageable pageable = PageRequest.of(page, 4);
-        Page<Dambyeolag> dambyeolagPage = dambyeolagRepository.findByOrderByStickerCountDesc(pageable, exhibitionId);
+        Page<Dambyeolag> dambyeolagPage;
+        // 인기순 정렬
+        if(sortType.equalsIgnoreCase("popular"))
+            dambyeolagPage = dambyeolagRepository.findByOrderByStickerCountDesc(pageable, exhibitionId);
+        // 최신순 정렬
+        else if(sortType.equalsIgnoreCase("recent"))
+            dambyeolagPage = dambyeolagRepository.findAllByOrderByCreateTimeDesc(pageable, exhibitionId);
+        else
+            throw new BusinessException(ErrorCode.SORT_TYPE_NOT_FOUND);
+
 
         return dambyeolagMapper.dambyeolagPageTodambyeolagRspDtoPage(dambyeolagPage);
+    }
+
+    @Override
+    public Dambyeolag findById(long dambyeolagId) {
+        Optional<Dambyeolag> dambyeolag = dambyeolagRepository.findDambyeolagById(dambyeolagId);
+
+        return dambyeolag.orElseThrow(() -> new BusinessException(ErrorCode.DAMBYEOLAG_NOT_FOUND));
     }
 
     @Override
@@ -70,6 +86,7 @@ public class DambyeolagServiceImpl implements DambyeolagService {
     }
 
     @Override
+    @Transactional
     public void deleteDambyeolag(long memberId, long dambyeolagId) {
         Dambyeolag dambyeolag = findById(dambyeolagId);
         checkDambyeolagOner(dambyeolag, memberId);
@@ -78,14 +95,15 @@ public class DambyeolagServiceImpl implements DambyeolagService {
     }
 
     @Override
-    public void deleteBookmark(long memberId, long dambyeolagBookmarkId) {
-        DambyeolagBookmark dambyeolagBookmark = findDambyeolagBookmarkById(dambyeolagBookmarkId);
-        checkDambyeolagBookmarkOner(dambyeolagBookmark, memberId);
+    @Transactional
+    public void deleteBookmark(long memberId, long dambyeolagId) {
+        DambyeolagBookmark dambyeolagBookmark = findDambyeolagBookmarkByDambyeolagIdAndMemberId(memberId, dambyeolagId);
 
         dambyeolagBookmarkRepository.delete(dambyeolagBookmark);
     }
 
     @Override
+    @Transactional
     public void addBookmark(long memberId, long dambyeolagId) {
         Member member = memberService.findById(memberId);
         Dambyeolag dambyeolag = findById(dambyeolagId);
@@ -98,15 +116,8 @@ public class DambyeolagServiceImpl implements DambyeolagService {
         dambyeolagBookmarkRepository.save(dambyeolagBookmark);
     }
 
-    @Override
-    public Dambyeolag findById(long dambyeolagId) {
-        Optional<Dambyeolag> dambyeolag = dambyeolagRepository.findDambyeolagById(dambyeolagId);
-
-        return dambyeolag.orElseThrow(() -> new BusinessException(ErrorCode.DAMBYEOLAG_NOT_FOUND));
-    }
-
-    private DambyeolagBookmark findDambyeolagBookmarkById(long dambyeolagBookmarkId) {
-        Optional<DambyeolagBookmark> dambyeolagBookmark = dambyeolagBookmarkRepository.findById(dambyeolagBookmarkId);
+    private DambyeolagBookmark findDambyeolagBookmarkByDambyeolagIdAndMemberId(long memberId, long dambyeolagId) {
+        Optional<DambyeolagBookmark> dambyeolagBookmark = dambyeolagBookmarkRepository.findDambyeolagBookmarkByDambyeolagIdAndMemberId(dambyeolagId, memberId);
 
         return dambyeolagBookmark.orElseThrow(() -> new BusinessException(ErrorCode.DAMBYEOLAGBOOKMARK_NOT_FOUND));
     }
@@ -140,8 +151,4 @@ public class DambyeolagServiceImpl implements DambyeolagService {
             throw new BusinessException(ErrorCode.DAMBYEOLAG_NOT_ACCESS);
     }
 
-    private void checkDambyeolagBookmarkOner(DambyeolagBookmark dambyeolagBookmark, long memberId) {
-        if(dambyeolagBookmark.getMember().getId() != memberId)
-            throw new BusinessException(ErrorCode.DAMBYEOLAGBOOKMARK_NOT_ACCESS);
-    }
 }

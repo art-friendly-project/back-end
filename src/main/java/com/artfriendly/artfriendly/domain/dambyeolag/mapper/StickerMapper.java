@@ -14,8 +14,7 @@ import java.util.List;
 public interface StickerMapper {
     default Sticker stickerReqDtoToSticker(StickerReqDto stickerReqDto, Member member, Dambyeolag dambyeolag) {
         return Sticker.builder()
-                .xCoordinate(stickerReqDto.xCoordinate())
-                .yCoordinate(stickerReqDto.yCoordinate())
+                .stickerType(stickerReqDto.stickerType())
                 .body(stickerReqDto.body())
                 .member(member)
                 .dambyeolag(dambyeolag)

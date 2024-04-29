@@ -64,6 +64,7 @@ public enum ErrorCode {
     // Sticker
     STICKER_NOT_FOUND(404, "스티커가 존재하지 않습니다."),
     STICKER_NOT_ACCESS(403, "해당 스티커 관련 권한이 없습니다."),
+    STICKERNAME_NOT_FOUND(404, "해당 스티커 이미지가 존재하지 않습니다."),
 
     // ApiIntegration 에러
     API_CALL_FAILED(401, "API 호출에 실패했습니다."),
@@ -83,6 +84,9 @@ public enum ErrorCode {
 
     // 전시 취향 에러
     ARTPREFERENCE_NOT_FOUND(404, "해당 전시 취향 정보를 찾을 수 없습니다."),
+
+    // 정렬 에러
+    SORT_TYPE_NOT_FOUND(404, "해당 정렬 타입을 찾을 수 없습니다."),
 
     // Team
     TEAM_NOT_FOUND(404, "팀이 존재하지 않습니다."),
