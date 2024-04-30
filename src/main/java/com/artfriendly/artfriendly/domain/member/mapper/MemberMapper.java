@@ -5,6 +5,7 @@ import com.artfriendly.artfriendly.domain.mbti.service.MbtiService;
 import com.artfriendly.artfriendly.domain.member.dto.MemberDetailsRspDto;
 import com.artfriendly.artfriendly.domain.member.dto.MemberResponseDto;
 import com.artfriendly.artfriendly.domain.member.dto.MemberUpdateReqDto;
+import com.artfriendly.artfriendly.domain.member.dto.ProfileDto;
 import com.artfriendly.artfriendly.domain.member.entity.Member;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -22,4 +23,10 @@ public interface MemberMapper {
     List<MemberResponseDto> membersToMemberResponseDtos(List<Member> memberList);
     @Mapping(target = "mbti", source = "mbtiId")
     Member memberUpdateReqDtoToMember(MemberUpdateReqDto memberUpdateReqDto);
+
+    @Mapping(target = "dambyeolagCount", expression = "java(member.getDambyeolagList().size())")
+    @Mapping(target = "StickerCount", expression = "java(member.getStickerList().size())")
+    @Mapping(target = "interestedExhibitionCount", expression = "java(member.getExhibitionLikeList().size())")
+    @Mapping(target = "memberDetailsRspDto", source = "member")
+    ProfileDto memberToProfileDto(Member member);
 }

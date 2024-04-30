@@ -9,6 +9,7 @@ public record MemberDetailsRspDto(
         String email,
         String imageUrl,
         String nickName,
+        String selfIntro,
         MbtiSimpleRspDto mbtiSimpleRspDto,
         List<String> artPreferenceTypeList
 ) {

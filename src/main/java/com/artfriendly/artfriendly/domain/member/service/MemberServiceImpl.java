@@ -4,6 +4,7 @@ import com.artfriendly.artfriendly.domain.auth.dto.OAuth2Attributes;
 import com.artfriendly.artfriendly.domain.auth.dto.OAuth2LoginDto;
 import com.artfriendly.artfriendly.domain.member.dto.MemberDetailsRspDto;
 import com.artfriendly.artfriendly.domain.member.dto.MemberUpdateReqDto;
+import com.artfriendly.artfriendly.domain.member.dto.ProfileDto;
 import com.artfriendly.artfriendly.domain.member.entity.Member;
 import com.artfriendly.artfriendly.domain.member.entity.MemberImage;
 import com.artfriendly.artfriendly.domain.member.mapper.MemberMapper;
@@ -84,6 +85,12 @@ public class MemberServiceImpl implements MemberService {
     public MemberDetailsRspDto getMemberDetailsRspDto(long memberId) {
         Member member = findById(memberId);
         return memberMapper.memberToMemberDetailsRspDto(member);
+    }
+
+    @Override
+    public ProfileDto getProfileDto(long memberId) {
+        Member member = findById(memberId);
+        return memberMapper.memberToProfileDto(member);
     }
 
     @Override
