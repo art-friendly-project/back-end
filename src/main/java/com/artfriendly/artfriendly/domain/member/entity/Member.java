@@ -35,6 +35,9 @@ public class Member extends BaseTimeEntity {
     @Column
     private String nickName;
 
+    @Column
+    private String selfIntro;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mbti_id")
     private Mbti mbti;
@@ -60,11 +63,12 @@ public class Member extends BaseTimeEntity {
     List<ExhibitionView> exhibitionViewList = new ArrayList<>();
 
     @Builder
-    public Member(Long id, String email, String nickName, MemberImage image, List<String> role, List<String> artPreferenceTypeList, Mbti mbti) {
+    public Member(Long id, String email, String nickName, MemberImage image, String selfIntro, List<String> role, List<String> artPreferenceTypeList, Mbti mbti) {
         this.id = id;
         this.email = email;
         this.image = image;
         this.nickName = nickName;
+        this.selfIntro = selfIntro;
         this.role = role;
         this.artPreferenceTypeList = artPreferenceTypeList;
         this.mbti = mbti;
@@ -72,9 +76,12 @@ public class Member extends BaseTimeEntity {
 
     public void updateForm(Member memberToUpdate) {
         this.nickName = memberToUpdate.getNickName() == null ? this.nickName : memberToUpdate.getNickName();
+        this.selfIntro = memberToUpdate.getSelfIntro() == null ? this.selfIntro : memberToUpdate.getSelfIntro();
         // 입력 받은 전시 취향이 존재하는가
-        for(String type : memberToUpdate.artPreferenceTypeList) {
-            ArtPreferenceType.check(type);
+        if(memberToUpdate.artPreferenceTypeList != null) {
+            for(String type : memberToUpdate.artPreferenceTypeList) {
+                ArtPreferenceType.check(type);
+            }
         }
         this.artPreferenceTypeList = memberToUpdate.artPreferenceTypeList == null ? this.artPreferenceTypeList : memberToUpdate.artPreferenceTypeList;
         this.mbti = memberToUpdate.mbti == null ? this.mbti : memberToUpdate.mbti;
