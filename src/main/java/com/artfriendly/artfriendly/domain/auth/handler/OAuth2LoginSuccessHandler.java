@@ -53,9 +53,9 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
                 .newInstance()
                 .scheme("http")
                 .host("localhost")
-                //.port(80)
+                .port(3000)
                 .queryParams(queryParams)
-                .path("/receive-token")
+                .path("/login")
                 .build()
                 .toUri();
     }
