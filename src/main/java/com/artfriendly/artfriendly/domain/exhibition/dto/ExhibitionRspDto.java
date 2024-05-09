@@ -2,7 +2,7 @@ package com.artfriendly.artfriendly.domain.exhibition.dto;
 
 import java.time.LocalDate;
 
-public record ExhibitionPageRspDto(
+public record ExhibitionRspDto(
         long id,
         String title,
         Double temperature,

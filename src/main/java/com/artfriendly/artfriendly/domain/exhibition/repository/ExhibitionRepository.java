@@ -5,6 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.time.LocalDate;
+import java.util.List;
 
 public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
     // 복잡한 정렬 방식을 사용하기에 네이티브 쿼리 사용 (Mysql 버전)
@@ -22,4 +26,20 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
                     "INNER JOIN Exhibition_Info ei ON ei.exhibition_id = e.id",
             nativeQuery = true)
     Page<Exhibition> findExhibitionByOrderByTemperatureDesc(Pageable pageable);
+
+    @Query(value = "SELECT e.* FROM Exhibition e  " +
+            "INNER JOIN Exhibition_Info ei ON ei.exhibition_id = e.id " +
+            "WHERE ei.end_date >= :now " +
+            "ORDER BY e.temperature DESC, ABS(DATEDIFF(ei.start_date, :now)) ASC " +
+            "LIMIT 10",
+             nativeQuery = true)
+    List<Exhibition> findTop10ByTemperature(@Param("now") LocalDate now);
+
+    @Query(value = "SELECT e.* FROM Exhibition e " +
+            "INNER JOIN Exhibition_Info ei ON ei.exhibition_id = e.id " +
+            "WHERE ei.end_date >= :now " +
+            "ORDER BY ABS(DATEDIFF(ei.end_date, :now)) ASC, e.temperature DESC " +
+            "LIMIT 3",
+            nativeQuery = true)
+    List<Exhibition> findTop3ByEndDate(@Param("now") LocalDate now);
 }

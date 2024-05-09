@@ -1,7 +1,8 @@
 package com.artfriendly.artfriendly.domain.exhibition.controller;
 
 import com.artfriendly.artfriendly.domain.exhibition.dto.ExhibitionDetailsRspDto;
-import com.artfriendly.artfriendly.domain.exhibition.dto.ExhibitionPageRspDto;
+import com.artfriendly.artfriendly.domain.exhibition.dto.ExhibitionRankRspDto;
+import com.artfriendly.artfriendly.domain.exhibition.dto.ExhibitionRspDto;
 import com.artfriendly.artfriendly.domain.exhibition.service.ExhibitionService;
 import com.artfriendly.artfriendly.global.api.RspTemplate;
 import jakarta.validation.constraints.Max;
@@ -12,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("exhibitions")
@@ -26,10 +29,22 @@ public class ExhibitionController {
     }
 
     @GetMapping("/lists")
-    public RspTemplate<Page<ExhibitionPageRspDto>> getExhibitionList(@AuthenticationPrincipal long memberId,
-                                                                     @RequestParam @Min(0) int page) {
-        Page<ExhibitionPageRspDto> exhibitionPageRspDtos = exhibitionService.getExhibitionPageRspDto(memberId, page);
+    public RspTemplate<Page<ExhibitionRspDto>> getExhibitionList(@AuthenticationPrincipal long memberId,
+                                                                 @RequestParam @Min(0) int page) {
+        Page<ExhibitionRspDto> exhibitionPageRspDtos = exhibitionService.getExhibitionPageRspDto(memberId, page);
         return new RspTemplate<>(HttpStatus.OK, "전시 "+page+" 페이지 조회", exhibitionPageRspDtos);
+    }
+
+    @GetMapping("/lists/end")
+    public RspTemplate<List<ExhibitionRspDto>> getEndSoonExhibitionList(@AuthenticationPrincipal long memberId) {
+        List<ExhibitionRspDto> exhibitionRspDtoList = exhibitionService.getTop3ExhibitionsByEndingDate(memberId);
+        return new RspTemplate<>(HttpStatus.OK, "곧 종료되는 인기 전시 3개", exhibitionRspDtoList);
+    }
+
+    @GetMapping("/lists/popular")
+    public RspTemplate<List<ExhibitionRankRspDto>> getPopularExhibitionList() {
+        List<ExhibitionRankRspDto> exhibitionRankRspDtoList = exhibitionService.getTop10PopularExhibitionRankRspDto();
+        return new RspTemplate<>(HttpStatus.OK, "현재 인기 전시 10개", exhibitionRankRspDtoList);
     }
 
     @PostMapping("/likes")
@@ -66,5 +81,4 @@ public class ExhibitionController {
         exhibitionService.deleteExhibitionHope(memberId, exhibitionId);
         return new RspTemplate<>(HttpStatus.OK, "전시 id : "+exhibitionId+" 전시 희망 삭제");
     }
-
 }

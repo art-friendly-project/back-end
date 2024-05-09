@@ -1,7 +1,8 @@
 package com.artfriendly.artfriendly.domain.exhibition.service;
 
 import com.artfriendly.artfriendly.domain.exhibition.dto.ExhibitionDetailsRspDto;
-import com.artfriendly.artfriendly.domain.exhibition.dto.ExhibitionPageRspDto;
+import com.artfriendly.artfriendly.domain.exhibition.dto.ExhibitionRankRspDto;
+import com.artfriendly.artfriendly.domain.exhibition.dto.ExhibitionRspDto;
 import com.artfriendly.artfriendly.domain.exhibition.entity.Exhibition;
 import com.artfriendly.artfriendly.domain.exhibition.entity.ExhibitionInfo;
 import org.springframework.data.domain.Page;
@@ -14,7 +15,7 @@ public interface ExhibitionService {
 
     void createExhibitionList(List<ExhibitionInfo> exhibitionInfoList);
 
-    Page<ExhibitionPageRspDto> getExhibitionPageRspDto(long memberId, int page);
+    Page<ExhibitionRspDto> getExhibitionPageRspDto(long memberId, int page);
 
     ExhibitionDetailsRspDto getExhibitionDetailsRpsDtoById(long exhibitionId, long memberId);
 
@@ -39,4 +40,12 @@ public interface ExhibitionService {
 
     @Transactional
     void addExhibitionView(long memberId, long exhibitionId);
+
+    List<ExhibitionRspDto> getTop3ExhibitionsByEndingDate(long memberId);
+
+    List<ExhibitionRankRspDto> getTop10PopularExhibitionRankRspDto();
+
+    void updateTop10PopularExhibitionRankRspDto();
+
+    void updateExhibitionList(List<ExhibitionInfo> updateExhibitionInfoList);
 }

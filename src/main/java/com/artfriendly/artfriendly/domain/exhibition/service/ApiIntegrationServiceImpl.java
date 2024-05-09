@@ -192,6 +192,7 @@ public class ApiIntegrationServiceImpl implements ApiIntegrationService {
     private Boolean integrateExhibition(int start, int end, List<PerforList> perforLists) {
         try {
             List<ExhibitionInfo> exhibitionInfoList = new CopyOnWriteArrayList<>(); // 스레드에서 사용되는 리스트는 해당 리스트나 Collections.synchronizedList를 사용한다.
+            List<ExhibitionInfo> updateExhibitionInfoList = new CopyOnWriteArrayList<>();
 
             for (int i = start; i <= end; i++) {
                 ExhibitionInfo exhibitionInfo;
@@ -201,13 +202,16 @@ public class ApiIntegrationServiceImpl implements ApiIntegrationService {
                 if (optionalExhibition.isPresent()) {
                     exhibitionInfo = optionalExhibition.get();
                     exhibitionInfo.updateForm(exhibitionMapper.perforInfoToExhibitionInfo(exhibitionApiRspDto.getMsgBody().getPerforInfo()));
+                    updateExhibitionInfoList.add(exhibitionInfo);
                 } else {
                     exhibitionInfo = exhibitionMapper.perforInfoToExhibitionInfo(exhibitionApiRspDto.getMsgBody().getPerforInfo());
+                    exhibitionInfoList.add(exhibitionInfo);
                 }
-                exhibitionInfoList.add(exhibitionInfo);
+
             }
 
             exhibitionService.createExhibitionList(exhibitionInfoList);
+            exhibitionService.updateExhibitionList(updateExhibitionInfoList);
             return true;
         } catch (Exception e) {
             log.warn("api 호출 후 연동 작업에 실패했습니다.");
