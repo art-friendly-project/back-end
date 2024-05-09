@@ -2,7 +2,8 @@ package com.artfriendly.artfriendly.domain.exhibition.mapper;
 
 import com.artfriendly.artfriendly.domain.exhibition.dto.ExhibitionDetailsRspDto;
 import com.artfriendly.artfriendly.domain.exhibition.dto.ExhibitionInfoRspDto;
-import com.artfriendly.artfriendly.domain.exhibition.dto.ExhibitionPageRspDto;
+import com.artfriendly.artfriendly.domain.exhibition.dto.ExhibitionRankRspDto;
+import com.artfriendly.artfriendly.domain.exhibition.dto.ExhibitionRspDto;
 import com.artfriendly.artfriendly.domain.exhibition.dto.apiIntegrationDto.callExhibitionDto.PerforInfo;
 import com.artfriendly.artfriendly.domain.exhibition.entity.Exhibition;
 import com.artfriendly.artfriendly.domain.exhibition.entity.ExhibitionInfo;
@@ -68,8 +69,8 @@ public interface ExhibitionMapper {
         );
     }
 
-    default Page<ExhibitionPageRspDto> exhibitionPageToExhibitionPageRspDto(Page<Exhibition> exhibitionPage, long memberId) {
-        return exhibitionPage.map(exhibition -> new ExhibitionPageRspDto(
+    default Page<ExhibitionRspDto> exhibitionPageToExhibitionRspDto(Page<Exhibition> exhibitionPage, long memberId) {
+        return exhibitionPage.map(exhibition -> new ExhibitionRspDto(
                 exhibition.getId(),
                 exhibition.getExhibitionInfo().getTitle(),
                 exhibition.getTemperature(),
@@ -78,6 +79,28 @@ public interface ExhibitionMapper {
                 exhibition.getExhibitionInfo().getArea(),
                 exhibition.getExhibitionLikeList().stream().anyMatch(exhibitionLike -> exhibitionLike.getMember().getId() == memberId)
         ));
+    }
+
+    default List<ExhibitionRspDto> exhibitionsToExhibitionRspDtos(List<Exhibition> exhibitions, long memberId) {
+        return exhibitions.stream().map(exhibition -> new ExhibitionRspDto(
+                exhibition.getId(),
+                exhibition.getExhibitionInfo().getTitle(),
+                exhibition.getTemperature(),
+                exhibition.getExhibitionInfo().getStartDate(),
+                exhibition.getExhibitionInfo().getEndDate(),
+                exhibition.getExhibitionInfo().getArea(),
+                exhibition.getExhibitionLikeList().stream().anyMatch(exhibitionLike -> exhibitionLike.getMember().getId() == memberId)
+        )).toList();
+    }
+
+    default ExhibitionRankRspDto exhibitionToExhibitionRankRspDto(Exhibition exhibition, int rank, String rankShift) {
+        return new ExhibitionRankRspDto(
+                exhibition.getId(),
+                rank,
+                exhibition.getExhibitionInfo().getTitle(),
+                exhibition.getExhibitionInfo().getImageUrl(),
+                rankShift
+        );
     }
 
     ExhibitionInfoRspDto exhibitionInfoToExhibitionInfoRspDto(ExhibitionInfo exhibitionInfo);
