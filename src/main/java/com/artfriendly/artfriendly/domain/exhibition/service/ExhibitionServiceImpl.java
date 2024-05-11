@@ -79,11 +79,19 @@ public class ExhibitionServiceImpl implements ExhibitionService{
 
     @Override
     @Cacheable(value = "exhibitionPageCache", cacheManager = "exhibitionCache")
-    public Page<ExhibitionRspDto> getExhibitionPageRspDto(long memberId, int page) {
+    public Page<ExhibitionRspDto> getExhibitionPageRspDto(long memberId, int page, String area, String progressStatus, String sortType) {
         memberService.findById(memberId);
 
         Pageable pageable = PageRequest.of(page, 8);
-        Page<Exhibition> exhibitionPage = exhibitionRepository.findExhibitionByOrderByTemperatureDesc(pageable);
+        Page<Exhibition> exhibitionPage = Page.empty();
+
+        if(sortType.equals("popular")) {
+            exhibitionPage = exhibitionRepository.findExhibitionByOrderByTemperatureDesc(pageable, progressStatus, area);
+        }
+        else if(sortType.equals("recent")) {
+            exhibitionPage = exhibitionRepository.findExhibitionByOrderByStartDateDesc(pageable, progressStatus, area, LocalDate.now());
+        }
+
         return exhibitionMapper.exhibitionPageToExhibitionRspDto(exhibitionPage, memberId);
     }
 
@@ -194,7 +202,7 @@ public class ExhibitionServiceImpl implements ExhibitionService{
     @Override
     @Cacheable(value = "endingExhibitionCache", cacheManager = "endingExhibitionCache")
     public List<ExhibitionRspDto> getTop3ExhibitionsByEndingDate(long memberId) {
-        List<Exhibition> exhibitionList = exhibitionRepository.findTop3ByEndDate(LocalDate.now());
+        List<Exhibition> exhibitionList = exhibitionRepository.findTop3ByEndDate("inProgress", LocalDate.now());
         return exhibitionMapper.exhibitionsToExhibitionRspDtos(exhibitionList, memberId);
     }
 
@@ -206,7 +214,7 @@ public class ExhibitionServiceImpl implements ExhibitionService{
     @Override
     public void updateTop10PopularExhibitionRankRspDto() {
         List<ExhibitionRankRspDto> exhibitionRankRspDtoList = new ArrayList<>();
-        List<Exhibition> exhibitionList = exhibitionRepository.findTop10ByTemperature(LocalDate.now());
+        List<Exhibition> exhibitionList = exhibitionRepository.findTop10ByTemperature("inProgress", LocalDate.now());
         for(int i = 0; i < exhibitionList.size(); i++) {
             Exhibition exhibition = exhibitionList.get(i);
             ExhibitionRankRspDto cacheExhibitionRankRspDto = popularExhibitionCache.getExhibitionRankRspDto(exhibition.getId());

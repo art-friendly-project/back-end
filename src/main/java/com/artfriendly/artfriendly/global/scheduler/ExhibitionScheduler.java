@@ -1,6 +1,7 @@
 package com.artfriendly.artfriendly.global.scheduler;
 
 import com.artfriendly.artfriendly.domain.exhibition.service.ApiIntegrationService;
+import com.artfriendly.artfriendly.domain.exhibition.service.ExhibitionInfoService;
 import com.artfriendly.artfriendly.domain.exhibition.service.ExhibitionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 public class ExhibitionScheduler {
     private final ApiIntegrationService apiIntegrationService;
     private final ExhibitionService exhibitionService;
+    private final ExhibitionInfoService exhibitionInfoService;
     @Value("${exhibition.code.art}")
     String artRealmCode;
 
@@ -21,10 +23,7 @@ public class ExhibitionScheduler {
     @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")
     public void integrationExhibition() {
         apiIntegrationService.integrateExhibitionInfo(LocalDate.now(), 6, artRealmCode);
-    }
-
-    @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")
-    public void updatePopularExhibitionCache() {
+        exhibitionInfoService.updateExhibitionInfoProgress(LocalDate.now());
         exhibitionService.updateTop10PopularExhibitionRankRspDto();
     }
 }

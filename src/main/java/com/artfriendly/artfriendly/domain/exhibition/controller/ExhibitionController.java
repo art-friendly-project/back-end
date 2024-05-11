@@ -30,8 +30,11 @@ public class ExhibitionController {
 
     @GetMapping("/lists")
     public RspTemplate<Page<ExhibitionRspDto>> getExhibitionList(@AuthenticationPrincipal long memberId,
-                                                                 @RequestParam @Min(0) int page) {
-        Page<ExhibitionRspDto> exhibitionPageRspDtos = exhibitionService.getExhibitionPageRspDto(memberId, page);
+                                                                 @RequestParam @Min(0) int page,
+                                                                 String area,
+                                                                 String progressStatus,
+                                                                 String sortType) {
+        Page<ExhibitionRspDto> exhibitionPageRspDtos = exhibitionService.getExhibitionPageRspDto(memberId, page, area, progressStatus, sortType);
         return new RspTemplate<>(HttpStatus.OK, "전시 "+page+" 페이지 조회", exhibitionPageRspDtos);
     }
 
