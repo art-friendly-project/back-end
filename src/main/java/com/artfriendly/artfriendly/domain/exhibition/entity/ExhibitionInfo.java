@@ -74,12 +74,16 @@ public class ExhibitionInfo {
     @NotNull
     private String placeAddr;
 
+    @Column(nullable = false)
+    @NotNull
+    private String progressStatus;
+
     @OneToOne
     @JoinColumn(name = "exhibition_id")
     private Exhibition exhibition;
 
     @Builder
-    public ExhibitionInfo(Long id, int seq, String title, LocalDate startDate, LocalDate endDate, String place, String realmName, String area, String imageUrl, double gpsX, double gpsY, String ticketingUrl, String phone, String price, String placeAddr) {
+    public ExhibitionInfo(Long id, int seq, String title, LocalDate startDate, LocalDate endDate, String place, String realmName, String area, String imageUrl, double gpsX, double gpsY, String ticketingUrl, String phone, String price, String placeAddr, String progressStatus) {
         this.id = id;
         this.seq = seq;
         this.title = title;
@@ -95,6 +99,7 @@ public class ExhibitionInfo {
         this.phone = phone;
         this.price = price;
         this.placeAddr = placeAddr;
+        this.progressStatus = progressStatus;
     }
 
     public void updateForm(ExhibitionInfo updateExhibitionInfo) {
@@ -111,6 +116,23 @@ public class ExhibitionInfo {
         this.phone = updateExhibitionInfo.getPhone();
         this.price = updateExhibitionInfo.getPrice();
         this.placeAddr = updateExhibitionInfo.getPlaceAddr();
+        this.progressStatus = updateExhibitionInfo.getProgressStatus();
+    }
+
+    public void updateProgressStatus() {
+        LocalDate now = LocalDate.now();
+        // 종료 날짜가 지난 경우
+        if (now.isAfter(this.getEndDate())) {
+            this.progressStatus = "ended";
+        }
+        // 현재 날짜가 시작 날짜와 같거나 이후이며, 종료 날짜 이전인 경우
+        else if (!now.isBefore(this.getStartDate()) && now.isBefore(this.getEndDate())) {
+            this.progressStatus = "inProgress";
+        }
+        // 시작 날짜가 아직 오지 않은 경우
+        else if (now.isBefore(this.getStartDate())) {
+            this.progressStatus = "scheduled";
+        }
     }
 
     public void setExhibition(Exhibition exhibition) {

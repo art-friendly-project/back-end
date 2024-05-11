@@ -11,6 +11,7 @@ import com.artfriendly.artfriendly.global.utils.LocalDateFormatter;
 import org.mapstruct.Mapper;
 import org.springframework.data.domain.Page;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,19 +23,23 @@ public interface ExhibitionMapper {
             return null;
         }
 
+        LocalDate startDate = LocalDateFormatter.converToLocalDate(perforInfo.getStartDate(), "yyyyMMdd");
+        LocalDate endDate =  LocalDateFormatter.converToLocalDate(perforInfo.getEndDate(), "yyyyMMdd");
+
         ExhibitionInfo.ExhibitionInfoBuilder exhibitionInfo = ExhibitionInfo.builder();
 
         exhibitionInfo.seq( perforInfo.getSeq() );
         exhibitionInfo.title( perforInfo.getTitle() );
+
         if ( perforInfo.getStartDate() != null ) {
-            exhibitionInfo.startDate( LocalDateFormatter.converToLocalDate(perforInfo.getStartDate(), "yyyyMMdd") );
+            exhibitionInfo.startDate( startDate );
         }
         if ( perforInfo.getEndDate() != null ) {
-            exhibitionInfo.endDate( LocalDateFormatter.converToLocalDate(perforInfo.getEndDate(), "yyyyMMdd") );
+            exhibitionInfo.endDate( endDate );
         }
         exhibitionInfo.place( perforInfo.getPlace() );
         exhibitionInfo.realmName( perforInfo.getRealmName() );
-        exhibitionInfo.area( perforInfo.getArea() );
+        exhibitionInfo.area( perforInfo.getArea().equals("경기") || perforInfo.getArea().equals("인천") ? "경기인천" : perforInfo.getArea() );
         exhibitionInfo.imageUrl( perforInfo.getImgUrl() );
         exhibitionInfo.gpsX( perforInfo.getGpsX() );
         exhibitionInfo.gpsY( perforInfo.getGpsY() );
@@ -42,6 +47,13 @@ public interface ExhibitionMapper {
         exhibitionInfo.phone( perforInfo.getPhone() );
         exhibitionInfo.price( perforInfo.getPrice() );
         exhibitionInfo.placeAddr( perforInfo.getPlaceAddr() );
+
+        LocalDate now = LocalDate.now();
+
+        if(now.isBefore(startDate))
+            exhibitionInfo.progressStatus("scheduled");
+        else
+            exhibitionInfo.progressStatus("inProgress");
 
         return exhibitionInfo.build();
     }

@@ -31,7 +31,7 @@ public class CacheConfig {
         cacheManager.setCaffeine(Caffeine.newBuilder()
                 .expireAfterWrite(15, TimeUnit.MINUTES)
                 .initialCapacity(40)  // 초기 캐시 사이즈
-                .maximumSize(1000));    // 최대 캐시 사이즈
+                .maximumSize(2000));    // 최대 캐시 사이즈
         return cacheManager;
     }
 }
