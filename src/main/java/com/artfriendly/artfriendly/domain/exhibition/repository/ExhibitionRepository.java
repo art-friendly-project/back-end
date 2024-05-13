@@ -24,8 +24,8 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
             "ELSE 2 " +
             "END, " +
             "ei.title ASC",
-            countQuery = "SELECT count(*) FROM Exhibition e " +
-                    "INNER JOIN Exhibition_Info ei ON ei.exhibition_id = e.id",
+            countQuery = "SELECT count(*) FROM exhibition e " +
+                    "INNER JOIN exhibition_info ei ON ei.exhibition_id = e.id",
             nativeQuery = true)
     Page<Exhibition> findExhibitionByOrderByTemperatureDesc(Pageable pageable,
                                                             @Param("progressStatus") String progressStatus,
@@ -42,8 +42,8 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
             "ELSE 2 " +
             "END, " +
             "ei.title ASC",
-            countQuery = "SELECT count(*) FROM Exhibition e " +
-                    "INNER JOIN Exhibition_Info ei ON ei.exhibition_id = e.id",
+            countQuery = "SELECT count(*) FROM exhibition e " +
+                    "INNER JOIN exhibition_info ei ON ei.exhibition_id = e.id",
             nativeQuery = true)
     Page<Exhibition> findExhibitionByOrderByStartDateDesc(Pageable pageable,
                                                             @Param("progressStatus") String progressStatus,
