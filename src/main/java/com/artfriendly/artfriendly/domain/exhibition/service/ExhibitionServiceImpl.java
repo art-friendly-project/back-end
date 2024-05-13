@@ -223,7 +223,7 @@ public class ExhibitionServiceImpl implements ExhibitionService{
                 exhibitionRankRspDtoList.add(exhibitionMapper.exhibitionToExhibitionRankRspDto(exhibition, i+1, "new"));
             }
             else {
-                exhibitionRankRspDtoList.add(exhibitionMapper.exhibitionToExhibitionRankRspDto(exhibition, i+1, String.valueOf((i - cacheExhibitionRankRspDto.rank()) * -1)));
+                exhibitionRankRspDtoList.add(exhibitionMapper.exhibitionToExhibitionRankRspDto(exhibition, i+1, String.valueOf((i - cacheExhibitionRankRspDto.rank() - 1) * -1)));
             }
         }
         popularExhibitionCache.clearPopularExhibitionCache();
