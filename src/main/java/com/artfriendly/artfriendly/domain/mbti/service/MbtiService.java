@@ -13,4 +13,6 @@ public interface MbtiService {
     @Transactional
     void createMbti(MbtiReqDto mbtiReqDto);
 
+    @Transactional
+    void initMbit();
 }
