@@ -16,6 +16,11 @@ spring:
         format_sql: true
         default_batch_fetch_size: 100
     open-in-view: false
+  # multipart 파일 용량 설정
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
 
   # 시큐리티 관련 설정
   security:
