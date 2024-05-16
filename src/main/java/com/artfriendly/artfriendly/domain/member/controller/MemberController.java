@@ -47,8 +47,8 @@ public class MemberController {
 
     @PatchMapping(path = "/images", consumes = "multipart/form-data")
     public RspTemplate<Void> updateMemberImage(@AuthenticationPrincipal long memberId,
-                                               @RequestPart(value = "profileImage") MultipartFile image) throws IOException {
-        memberService.updateMemberImage(image, memberId);
+                                               MultipartFile profileImage) throws IOException {
+        memberService.updateMemberImage(profileImage, memberId);
         return new RspTemplate<>(HttpStatus.OK, MEMBER_ID + memberId + " 멤버 이미지 수정");
     }
 }
