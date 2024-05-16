@@ -104,6 +104,14 @@ public class DambyeolagServiceImpl implements DambyeolagService {
 
     @Override
     @Transactional
+    public void deleteBookmarksByMember(Member member) {
+        List<DambyeolagBookmark> dambyeolagBookmarkList = dambyeolagBookmarkRepository.findDambyeolagBookmarkByMemberId(member.getId());
+        member.setDambyeolagBookmarkList(null);
+        dambyeolagBookmarkRepository.deleteAll(dambyeolagBookmarkList);
+    }
+
+    @Override
+    @Transactional
     public void addBookmark(long memberId, long dambyeolagId) {
         Member member = memberService.findById(memberId);
         Dambyeolag dambyeolag = findById(dambyeolagId);

@@ -86,5 +86,16 @@ public class Member extends BaseTimeEntity {
         this.artPreferenceTypeList = memberToUpdate.artPreferenceTypeList == null ? this.artPreferenceTypeList : memberToUpdate.artPreferenceTypeList;
         this.mbti = memberToUpdate.mbti == null ? this.mbti : memberToUpdate.mbti;
     }
+
+    public void deleteMember() {
+        this.email = null;
+        this.nickName = "탈퇴한 멤버";
+        this.selfIntro = null;
+        this.mbti = null;
+        this.role = null;
+        this.artPreferenceTypeList = null;
+    }
+
     public void setImage(MemberImage memberImage) { this.image = memberImage; }
+    public void setDambyeolagBookmarkList(List<DambyeolagBookmark> dambyeolagBookmarkList) { this.dambyeolagBookmarkList = dambyeolagBookmarkList; }
 }

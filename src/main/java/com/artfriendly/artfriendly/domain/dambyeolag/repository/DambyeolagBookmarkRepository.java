@@ -12,6 +12,9 @@ public interface DambyeolagBookmarkRepository extends JpaRepository<DambyeolagBo
     @Query("SELECT d FROM DambyeolagBookmark d " +
             "WHERE d.dambyeolag.id = :dambyeolagId")
     List<DambyeolagBookmark> findDambyeolagBookmarkByDambyeolagId(@Param("dambyeolagId") long dambyeolagId);
+    @Query("SELECT d FROM DambyeolagBookmark d " +
+            "where d.member.id = :memberId")
+    List<DambyeolagBookmark> findDambyeolagBookmarkByMemberId(@Param("memberId") long memberId);
 
     Optional<DambyeolagBookmark> findDambyeolagBookmarkByDambyeolagIdAndMemberId(long dambyeolagId, long memberId);
 }

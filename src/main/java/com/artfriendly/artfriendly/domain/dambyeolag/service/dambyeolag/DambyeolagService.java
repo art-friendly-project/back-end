@@ -4,6 +4,7 @@ import com.artfriendly.artfriendly.domain.dambyeolag.dto.dambyeolag.DambyeolagDe
 import com.artfriendly.artfriendly.domain.dambyeolag.dto.dambyeolag.DambyeolagReqDto;
 import com.artfriendly.artfriendly.domain.dambyeolag.dto.dambyeolag.DambyeolagRspDto;
 import com.artfriendly.artfriendly.domain.dambyeolag.entity.Dambyeolag;
+import com.artfriendly.artfriendly.domain.member.entity.Member;
 import org.springframework.data.domain.Page;
 
 public interface DambyeolagService {
@@ -13,6 +14,7 @@ public interface DambyeolagService {
     void deleteDambyeolag(long memberId, long dambyeolagId);
     Dambyeolag findById(long dambyeolagId);
     void deleteBookmark(long memberId, long dambyeolagBookmarkId);
+    void deleteBookmarksByMember(Member member);
     void addBookmark(long memberId, long dambyeolagId);
 
 }

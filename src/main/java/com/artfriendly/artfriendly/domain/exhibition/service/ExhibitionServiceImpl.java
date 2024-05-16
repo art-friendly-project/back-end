@@ -31,7 +31,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ExhibitionServiceImpl implements ExhibitionService{
     private final PopularExhibitionCache popularExhibitionCache;
-
     private final MemberService memberService;
     private final ExhibitionRepository exhibitionRepository;
     private final ExhibitionInfoRepository exhibitionInfoRepository;
