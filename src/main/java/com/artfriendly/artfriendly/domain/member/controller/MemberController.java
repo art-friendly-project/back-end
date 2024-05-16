@@ -45,7 +45,7 @@ public class MemberController {
         return new RspTemplate<>(HttpStatus.OK, MEMBER_ID + memberId + "멤버 회원 탈퇴");
     }
 
-    @PatchMapping("/images")
+    @PatchMapping(path = "/images", consumes = "multipart/form-data")
     public RspTemplate<Void> updateMemberImage(@AuthenticationPrincipal long memberId,
                                                @RequestPart(value = "profileImage") MultipartFile image) throws IOException {
         memberService.updateMemberImage(image, memberId);
