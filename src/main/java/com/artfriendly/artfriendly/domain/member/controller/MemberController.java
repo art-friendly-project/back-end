@@ -28,8 +28,8 @@ public class MemberController {
     }
 
     @GetMapping("profiles")
-    public RspTemplate<ProfileDto> getProfile(@AuthenticationPrincipal long memberId) {
-        ProfileDto profileDto = memberService.getProfileDto(memberId);
+    public RspTemplate<ProfileDto> getProfile(@AuthenticationPrincipal long memberId, long searchMemberId) {
+        ProfileDto profileDto = memberService.getProfileDto(searchMemberId);
         return new RspTemplate<>(HttpStatus.OK, MEMBER_ID + memberId + " 프로필 정보", profileDto);
     }
 
@@ -37,6 +37,12 @@ public class MemberController {
     public RspTemplate<Void> updateMember(@AuthenticationPrincipal long memberId, @Valid @RequestBody MemberUpdateReqDto updateReqDto) {
         memberService.updateMember(updateReqDto, memberId);
         return new RspTemplate<>(HttpStatus.OK, MEMBER_ID + memberId + " 멤버 정보 수정");
+    }
+
+    @DeleteMapping
+    public RspTemplate<Void> deleteMember(@AuthenticationPrincipal long memberId) {
+        memberService.accountDeletion(memberId);
+        return new RspTemplate<>(HttpStatus.OK, MEMBER_ID + memberId + "멤버 회원 탈퇴");
     }
 
     @PatchMapping("/images")

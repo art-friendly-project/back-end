@@ -2,12 +2,14 @@ package com.artfriendly.artfriendly.domain.member.service;
 
 import com.artfriendly.artfriendly.domain.auth.dto.OAuth2Attributes;
 import com.artfriendly.artfriendly.domain.auth.dto.OAuth2LoginDto;
+import com.artfriendly.artfriendly.domain.member.Event.MemberEventPublisher;
 import com.artfriendly.artfriendly.domain.member.dto.MemberDetailsRspDto;
 import com.artfriendly.artfriendly.domain.member.dto.MemberUpdateReqDto;
 import com.artfriendly.artfriendly.domain.member.dto.ProfileDto;
 import com.artfriendly.artfriendly.domain.member.entity.Member;
 import com.artfriendly.artfriendly.domain.member.entity.MemberImage;
 import com.artfriendly.artfriendly.domain.member.mapper.MemberMapper;
+import com.artfriendly.artfriendly.domain.member.repository.MemberImageRepository;
 import com.artfriendly.artfriendly.domain.member.repository.MemberRepository;
 import com.artfriendly.artfriendly.domain.s3.service.S3Service;
 import com.artfriendly.artfriendly.global.exception.common.BusinessException;
@@ -30,6 +32,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
+    private final MemberImageRepository memberImageRepository;
+    private final MemberEventPublisher memberEventPublisher;
     private final CustomAuthorityUtils customAuthorityUtils;
     private final MemberMapper memberMapper;
     private final S3Service s3Service;
@@ -115,6 +119,28 @@ public class MemberServiceImpl implements MemberService {
         String imageUrl = s3Service.getImageUrl(fileName);
 
         memberImage.updateForm(imageUrl, fileName);
+    }
+
+    @Override
+    @Transactional
+    public void deleteMemberImage(Member member) {
+        MemberImage memberImage = member.getImage();
+        if(!memberImage.getFileName().equals("Default_Image")) {
+            s3Service.deleteImageByFileName(memberImage.getFileName());
+        }
+        member.setImage(null);
+        memberImageRepository.delete(memberImage);
+    }
+
+    @Override
+    @Transactional
+    public void accountDeletion(long memberId) {
+        Member member = findById(memberId);
+
+        memberEventPublisher.memberDeleteEventPublish(memberId+"회원 탈퇴", member);
+        member.deleteMember();
+
+        memberRepository.save(member);
     }
 
     private Optional<Member> findOptionalMemberByEmail(String email) {

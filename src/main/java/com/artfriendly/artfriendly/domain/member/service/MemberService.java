@@ -18,5 +18,6 @@ public interface MemberService {
     ProfileDto getProfileDto(long memberId);
     void updateMember(MemberUpdateReqDto memberUpdateReqDto, long memberId);
     void updateMemberImage(MultipartFile image, long memberId) throws IOException;
-
+    void deleteMemberImage(Member member);
+    void accountDeletion(long memberId);
 }
