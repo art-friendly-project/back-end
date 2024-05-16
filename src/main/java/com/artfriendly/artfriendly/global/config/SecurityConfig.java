@@ -47,8 +47,8 @@ public class SecurityConfig {
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/test/**").authenticated()
-                        .anyRequest().permitAll()
+                        .requestMatchers("/oauth/**").permitAll()
+                        .anyRequest().hasAnyAuthority("ROLE_USER")
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(oAuth2LoginSuccessHandler)
