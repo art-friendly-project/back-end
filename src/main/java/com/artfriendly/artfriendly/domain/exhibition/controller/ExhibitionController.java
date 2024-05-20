@@ -50,6 +50,12 @@ public class ExhibitionController {
         return new RspTemplate<>(HttpStatus.OK, "현재 인기 전시 10개", exhibitionRankRspDtoList);
     }
 
+    @GetMapping("/lists/popular/clear")
+    public RspTemplate<Void> clearPopularExhibitionList() {
+        exhibitionService.clearPopularExhibitionCache();
+        return new RspTemplate<>(HttpStatus.OK, "현재 인기 전시 10개 캐시 초기화");
+    }
+
     @PostMapping("/likes")
     public RspTemplate<Void> addExhibitionLike(@AuthenticationPrincipal long memberId,
                                                @RequestParam @NotNull long exhibitionId) {
