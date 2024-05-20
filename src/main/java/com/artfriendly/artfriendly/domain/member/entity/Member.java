@@ -98,4 +98,5 @@ public class Member extends BaseTimeEntity {
 
     public void setImage(MemberImage memberImage) { this.image = memberImage; }
     public void setDambyeolagBookmarkList(List<DambyeolagBookmark> dambyeolagBookmarkList) { this.dambyeolagBookmarkList = dambyeolagBookmarkList; }
+    public void grantRoles(List<String> role) { this.role.addAll(role); }
 }

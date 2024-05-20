@@ -47,5 +47,7 @@ public interface ExhibitionService {
 
     void updateTop10PopularExhibitionRankRspDto();
 
+    void clearPopularExhibitionCache();
+
     void updateExhibitionList(List<ExhibitionInfo> updateExhibitionInfoList);
 }

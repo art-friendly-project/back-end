@@ -231,6 +231,12 @@ public class ExhibitionServiceImpl implements ExhibitionService{
     }
 
     @Override
+    public void clearPopularExhibitionCache() {
+        popularExhibitionCache.clearPopularExhibitionCache();
+        updateTop10PopularExhibitionRankRspDto();
+    }
+
+    @Override
     public void updateExhibitionList(List<ExhibitionInfo> updateExhibitionInfoList) {
         for(ExhibitionInfo exhibitionInfo : updateExhibitionInfoList) {
             if(exhibitionInfo == null)

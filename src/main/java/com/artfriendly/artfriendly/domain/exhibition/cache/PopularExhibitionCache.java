@@ -39,6 +39,6 @@ public class PopularExhibitionCache {
     }
 
     public void clearPopularExhibitionCache() {
-        popularExhibition.cleanUp();
+        popularExhibition.invalidateAll();
     }
 }
