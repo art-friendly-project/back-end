@@ -53,7 +53,7 @@ public class DambyeolagServiceImpl implements DambyeolagService {
     // 해당 전시 담벼락 조회
     @Override
     public Page<DambyeolagRspDto> getDambyeolagPageOrderBySortType(int page, long exhibitionId, String sortType) {
-        Pageable pageable = PageRequest.of(page, 4);
+        Pageable pageable = PageRequest.of(page, 8);
         Page<Dambyeolag> dambyeolagPage;
         // 인기순 정렬
         if(sortType.equalsIgnoreCase("popular"))
