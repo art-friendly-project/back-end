@@ -20,4 +20,6 @@ public interface MemberService {
     void updateMemberImage(MultipartFile image, long memberId) throws IOException;
     void deleteMemberImage(Member member);
     void accountDeletion(long memberId);
+    void addWithdrawalReason(long reasonId);
+    void initWithdrawalReason();
 }

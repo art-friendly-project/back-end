@@ -51,4 +51,10 @@ public class MemberController {
         memberService.updateMemberImage(profileImage, memberId);
         return new RspTemplate<>(HttpStatus.OK, MEMBER_ID + memberId + " 멤버 이미지 수정");
     }
+
+    @PostMapping("withdrawal")
+    public RspTemplate<Void> addWithdrawalReason(Long reasonId) {
+        memberService.addWithdrawalReason(reasonId);
+        return new RspTemplate<>(HttpStatus.CREATED, "탈퇴 이유가 추가 되었습니다.");
+    }
 }

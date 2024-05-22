@@ -78,7 +78,7 @@ exhibition:
       service-key: ${API_SERVICEKEY}
 
 profile:
-  default-image: https://github.com/art-friendly-project/back-end/assets/68217405/f7d7d440-fde4-4d0d-b4fe-e3a4fa75d9bb
+  default-image: https://github.com/art-friendly-project/back-end/assets/68217405/e770063b-9f71-468c-804b-68b5607a1916
 
 admin:
   email: ${ADMIN_EMAIL}
