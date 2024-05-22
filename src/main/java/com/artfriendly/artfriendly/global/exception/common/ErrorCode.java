@@ -88,6 +88,9 @@ public enum ErrorCode {
     // 정렬 에러
     SORT_TYPE_NOT_FOUND(404, "해당 정렬 타입을 찾을 수 없습니다."),
 
+    // 회원 탈퇴
+    WITHDRAWALREASON_NOT_FOUND(404, "해당 탈퇴 이유를 찾을 수 없습니다."),
+
     // Team
     TEAM_NOT_FOUND(404, "팀이 존재하지 않습니다."),
     TEAM_UPDATE_DENIED(403, "팀 수정 권한이 없습니다."),

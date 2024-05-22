@@ -8,9 +8,11 @@ import com.artfriendly.artfriendly.domain.member.dto.MemberUpdateReqDto;
 import com.artfriendly.artfriendly.domain.member.dto.ProfileDto;
 import com.artfriendly.artfriendly.domain.member.entity.Member;
 import com.artfriendly.artfriendly.domain.member.entity.MemberImage;
+import com.artfriendly.artfriendly.domain.member.entity.WithdrawalReason;
 import com.artfriendly.artfriendly.domain.member.mapper.MemberMapper;
 import com.artfriendly.artfriendly.domain.member.repository.MemberImageRepository;
 import com.artfriendly.artfriendly.domain.member.repository.MemberRepository;
+import com.artfriendly.artfriendly.domain.member.repository.WithdrawalReasonRepository;
 import com.artfriendly.artfriendly.domain.s3.service.S3Service;
 import com.artfriendly.artfriendly.global.exception.common.BusinessException;
 import com.artfriendly.artfriendly.global.exception.common.ErrorCode;
@@ -24,6 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Primary
@@ -33,6 +37,7 @@ import java.util.Optional;
 public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final MemberImageRepository memberImageRepository;
+    private final WithdrawalReasonRepository withdrawalReasonRepository;
     private final MemberEventPublisher memberEventPublisher;
     private final CustomAuthorityUtils customAuthorityUtils;
     private final MemberMapper memberMapper;
@@ -141,6 +146,30 @@ public class MemberServiceImpl implements MemberService {
         member.deleteMember();
 
         memberRepository.save(member);
+    }
+
+    @Override
+    @Transactional
+    public void addWithdrawalReason(long reasonId) {
+        WithdrawalReason withdrawalReason = withdrawalReasonRepository.findById(reasonId).orElseThrow(() -> new BusinessException(ErrorCode.WITHDRAWALREASON_NOT_FOUND));
+        withdrawalReason.increaseCount();
+    }
+
+    @Override
+    @Transactional
+    public void initWithdrawalReason() {
+        List<WithdrawalReason> withdrawalReasonList = new ArrayList<>();
+        List<String> reasonList = new ArrayList<>(List.of("원하는 전시/행사 정보가 부족한 것 같아요.", "앱 사용 빈도가 낮아요.", "다른 서비스가 더 편해요", "기록을 남기고 싶지 않아요.", "비밀이에요."));
+
+        for(String reason : reasonList) {
+            WithdrawalReason withdrawalReason = WithdrawalReason.builder()
+                    .reason(reason)
+                    .count(0)
+                    .build();
+            withdrawalReasonList.add(withdrawalReason);
+        }
+
+        withdrawalReasonRepository.saveAll(withdrawalReasonList);
     }
 
     private Optional<Member> findOptionalMemberByEmail(String email) {
