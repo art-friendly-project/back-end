@@ -12,7 +12,9 @@ import com.artfriendly.artfriendly.domain.member.service.MemberService;
 import com.artfriendly.artfriendly.global.exception.common.BusinessException;
 import com.artfriendly.artfriendly.global.exception.common.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -101,6 +103,11 @@ public class ExhibitionServiceImpl implements ExhibitionService{
 
     @Override
     @Transactional
+    @Caching(evict =  {
+            @CacheEvict(value = "exhibitionDetailsCache", allEntries = true),
+            @CacheEvict(value = "exhibitionPageCache", allEntries = true),
+            @CacheEvict(value = "endingExhibitionCache", allEntries = true)
+    })
     public void addExhibitionLike(long memberId, long exhibitionId) {
         Member member = memberService.findById(memberId);
         Exhibition exhibition = findExhibitionById(exhibitionId);
@@ -119,6 +126,11 @@ public class ExhibitionServiceImpl implements ExhibitionService{
 
     @Override
     @Transactional
+    @Caching(evict =  {
+            @CacheEvict(value = "exhibitionDetailsCache", allEntries = true),
+            @CacheEvict(value = "exhibitionPageCache", allEntries = true),
+            @CacheEvict(value = "endingExhibitionCache", allEntries = true)
+    })
     public void deleteExhibitionLike(long memberId, long exhibitionId) {
         ExhibitionLike exhibitionLike = findExhibitionLikeByMemberIdAndExhibitionId(memberId, exhibitionId);
 
@@ -129,6 +141,7 @@ public class ExhibitionServiceImpl implements ExhibitionService{
 
     @Override
     @Transactional
+    @CacheEvict(value = "exhibitionDetailsCache", allEntries = true)
     public void addExhibitionHope(long memberId, long exhibitionId, int hopeIndex) {
         Member member = memberService.findById(memberId);
         Exhibition exhibition = findExhibitionById(exhibitionId);
@@ -149,6 +162,7 @@ public class ExhibitionServiceImpl implements ExhibitionService{
 
     @Override
     @Transactional
+    @CacheEvict(value = "exhibitionDetailsCache", allEntries = true)
     public void updateExhibitionHope(long memberId, long exhibitionId, int hopeIndex) {
         ExhibitionHope exhibitionHope = findExhibitionHopeByMemberIdAndExhibitionHope(memberId, exhibitionId);
         ExhibitionHope.Hope hope = mapIndexToHope(hopeIndex);
@@ -164,6 +178,7 @@ public class ExhibitionServiceImpl implements ExhibitionService{
 
     @Override
     @Transactional
+    @CacheEvict(value = "exhibitionDetailsCache", allEntries = true)
     public void deleteExhibitionHope(long memberId, long exhibitionId) {
         ExhibitionHope exhibitionHope = findExhibitionHopeByMemberIdAndExhibitionHope(memberId, exhibitionId);
 

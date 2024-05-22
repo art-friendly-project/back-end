@@ -17,7 +17,7 @@ public interface ExhibitionService {
 
     Page<ExhibitionRspDto> getExhibitionPageRspDto(long memberId, int page, String area, String progressStatus, String sortType);
 
-    ExhibitionDetailsRspDto getExhibitionDetailsRpsDtoById(long exhibitionId, long memberId);
+    ExhibitionDetailsRspDto getExhibitionDetailsRpsDtoById(long memberId, long exhibitionId);
 
     Exhibition findExhibitionById(long exhibitionId);
 

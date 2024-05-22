@@ -1,5 +1,6 @@
 package com.artfriendly.artfriendly.global.init.controller;
 
+import com.artfriendly.artfriendly.domain.exhibition.service.ExhibitionService;
 import com.artfriendly.artfriendly.domain.mbti.service.MbtiService;
 import com.artfriendly.artfriendly.domain.member.service.MemberService;
 import com.artfriendly.artfriendly.global.api.RspTemplate;
@@ -15,11 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class InitController {
     private final MemberService memberService;
     private final MbtiService mbtiService;
+    private final ExhibitionService exhibitionService;
 
     @PostMapping
     public RspTemplate<Void> initDefaultData() {
         memberService.initWithdrawalReason();
         mbtiService.initMbit();
+        exhibitionService.clearPopularExhibitionCache();
         return new RspTemplate<>(HttpStatus.OK, "데이터베이스 초기화 완료");
     }
 }

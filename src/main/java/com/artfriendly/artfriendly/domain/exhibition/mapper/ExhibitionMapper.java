@@ -85,6 +85,7 @@ public interface ExhibitionMapper {
         return exhibitionPage.map(exhibition -> new ExhibitionRspDto(
                 exhibition.getId(),
                 exhibition.getExhibitionInfo().getTitle(),
+                exhibition.getExhibitionInfo().getImageUrl(),
                 exhibition.getTemperature(),
                 exhibition.getExhibitionInfo().getStartDate(),
                 exhibition.getExhibitionInfo().getEndDate(),
@@ -97,6 +98,7 @@ public interface ExhibitionMapper {
         return exhibitions.stream().map(exhibition -> new ExhibitionRspDto(
                 exhibition.getId(),
                 exhibition.getExhibitionInfo().getTitle(),
+                exhibition.getExhibitionInfo().getImageUrl(),
                 exhibition.getTemperature(),
                 exhibition.getExhibitionInfo().getStartDate(),
                 exhibition.getExhibitionInfo().getEndDate(),
