@@ -106,7 +106,7 @@ public class ExhibitionServiceImpl implements ExhibitionService{
     @Caching(evict =  {
             @CacheEvict(value = "exhibitionDetailsCache", allEntries = true),
             @CacheEvict(value = "exhibitionPageCache", allEntries = true),
-            @CacheEvict(value = "endingExhibitionCache", allEntries = true)
+            @CacheEvict(value = "endingExhibitionCache", allEntries = true, cacheManager = "endingExhibitionCache")
     })
     public void addExhibitionLike(long memberId, long exhibitionId) {
         Member member = memberService.findById(memberId);
@@ -129,7 +129,7 @@ public class ExhibitionServiceImpl implements ExhibitionService{
     @Caching(evict =  {
             @CacheEvict(value = "exhibitionDetailsCache", allEntries = true),
             @CacheEvict(value = "exhibitionPageCache", allEntries = true),
-            @CacheEvict(value = "endingExhibitionCache", allEntries = true)
+            @CacheEvict(value = "endingExhibitionCache", allEntries = true, cacheManager = "endingExhibitionCache")
     })
     public void deleteExhibitionLike(long memberId, long exhibitionId) {
         ExhibitionLike exhibitionLike = findExhibitionLikeByMemberIdAndExhibitionId(memberId, exhibitionId);
