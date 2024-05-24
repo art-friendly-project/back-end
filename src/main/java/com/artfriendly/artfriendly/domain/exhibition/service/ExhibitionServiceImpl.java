@@ -97,6 +97,17 @@ public class ExhibitionServiceImpl implements ExhibitionService{
     }
 
     @Override
+    @Cacheable(value = "interestExhibitionPageCache", cacheManager = "exhibitionCache")
+    public Page<ExhibitionRspDto> getInterestExhibitionPageRspDto(long memberId, int page) {
+        memberService.findById(memberId);
+
+        Pageable pageable = PageRequest.of(page, 8);
+        Page<Exhibition> exhibitionPage = exhibitionRepository.findExhibitionByMemberIdOrderByLastModifiedTime(pageable, memberId);
+
+        return exhibitionMapper.exhibitionPageToExhibitionRspDto(exhibitionPage, memberId);
+    }
+
+    @Override
     public Exhibition findExhibitionById(long exhibitionId) {
         return findOptionalExhibitionById(exhibitionId).orElseThrow(() -> new BusinessException(ErrorCode.EXHIBITION_NOT_FOUND));
     }
@@ -106,6 +117,7 @@ public class ExhibitionServiceImpl implements ExhibitionService{
     @Caching(evict =  {
             @CacheEvict(value = "exhibitionDetailsCache", allEntries = true),
             @CacheEvict(value = "exhibitionPageCache", allEntries = true),
+            @CacheEvict(value = "interestExhibitionPageCache", allEntries = true),
             @CacheEvict(value = "endingExhibitionCache", allEntries = true, cacheManager = "endingExhibitionCache")
     })
     public void addExhibitionLike(long memberId, long exhibitionId) {
@@ -129,6 +141,7 @@ public class ExhibitionServiceImpl implements ExhibitionService{
     @Caching(evict =  {
             @CacheEvict(value = "exhibitionDetailsCache", allEntries = true),
             @CacheEvict(value = "exhibitionPageCache", allEntries = true),
+            @CacheEvict(value = "interestExhibitionPageCache", allEntries = true),
             @CacheEvict(value = "endingExhibitionCache", allEntries = true, cacheManager = "endingExhibitionCache")
     })
     public void deleteExhibitionLike(long memberId, long exhibitionId) {
