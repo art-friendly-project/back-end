@@ -65,4 +65,10 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
             "LIMIT 3",
             nativeQuery = true)
     List<Exhibition> findTop3ByEndDate(@Param("progressStatus") String progressStatus, @Param("now") LocalDate now);
+
+    @Query(value = "SELECT e FROM  Exhibition e " +
+            "JOIN e.exhibitionLikeList el " +
+            "WHERE el.member.id = :memberId " +
+            "ORDER BY el.lastModifiedTime DESC ")
+    Page<Exhibition> findExhibitionByMemberIdOrderByLastModifiedTime(Pageable pageable, @Param("memberId") long memberId);
 }

@@ -38,6 +38,13 @@ public class ExhibitionController {
         return new RspTemplate<>(HttpStatus.OK, "전시 "+page+" 페이지 조회", exhibitionPageRspDtos);
     }
 
+    @GetMapping("/lists/interest")
+    public RspTemplate<Page<ExhibitionRspDto>> getInterestExhibitionList(@AuthenticationPrincipal long memberId,
+                                                                         @RequestParam @Min(0) int page) {
+        Page<ExhibitionRspDto> exhibitionRspDtos = exhibitionService.getInterestExhibitionPageRspDto(memberId, page);
+        return new RspTemplate<>(HttpStatus.OK, "관심 전시 페이지 조회", exhibitionRspDtos);
+    }
+
     @GetMapping("/lists/end")
     public RspTemplate<List<ExhibitionRspDto>> getEndSoonExhibitionList(@AuthenticationPrincipal long memberId) {
         List<ExhibitionRspDto> exhibitionRspDtoList = exhibitionService.getTop3ExhibitionsByEndingDate(memberId);

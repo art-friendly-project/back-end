@@ -19,6 +19,8 @@ public interface ExhibitionService {
 
     ExhibitionDetailsRspDto getExhibitionDetailsRpsDtoById(long memberId, long exhibitionId);
 
+    Page<ExhibitionRspDto> getInterestExhibitionPageRspDto(long memberId, int page);
+
     Exhibition findExhibitionById(long exhibitionId);
 
     void addExhibitionLike(long memberId, long exhibitionId);
