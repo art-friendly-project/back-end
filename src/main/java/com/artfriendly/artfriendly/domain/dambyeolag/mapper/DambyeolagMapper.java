@@ -1,6 +1,7 @@
 package com.artfriendly.artfriendly.domain.dambyeolag.mapper;
 
 import com.artfriendly.artfriendly.domain.dambyeolag.dto.dambyeolag.DambyeolagDetailsRspDto;
+import com.artfriendly.artfriendly.domain.dambyeolag.dto.dambyeolag.DambyeolagImageRspDto;
 import com.artfriendly.artfriendly.domain.dambyeolag.dto.dambyeolag.DambyeolagReqDto;
 import com.artfriendly.artfriendly.domain.dambyeolag.dto.dambyeolag.DambyeolagRspDto;
 import com.artfriendly.artfriendly.domain.dambyeolag.entity.Dambyeolag;
@@ -41,6 +42,13 @@ public interface DambyeolagMapper {
                 dambyeolag.getId(),
                 dambyeolag.getTitle(),
                 dambyeolag.getBody()
+        ));
+    }
+
+    default  Page<DambyeolagImageRspDto> dambyeolagPageToDambyeolagImageRspDto(Page<Dambyeolag> dambyeolagPage) {
+        return dambyeolagPage.map(dambyeolag -> new DambyeolagImageRspDto(
+                dambyeolag.getId(),
+                dambyeolag.getExhibition().getExhibitionInfo().getImageUrl()
         ));
     }
 }
