@@ -1,6 +1,7 @@
 package com.artfriendly.artfriendly.domain.dambyeolag.service.dambyeolag;
 
 import com.artfriendly.artfriendly.domain.dambyeolag.dto.dambyeolag.DambyeolagDetailsRspDto;
+import com.artfriendly.artfriendly.domain.dambyeolag.dto.dambyeolag.DambyeolagImageRspDto;
 import com.artfriendly.artfriendly.domain.dambyeolag.dto.dambyeolag.DambyeolagReqDto;
 import com.artfriendly.artfriendly.domain.dambyeolag.dto.dambyeolag.DambyeolagRspDto;
 import com.artfriendly.artfriendly.domain.dambyeolag.entity.Dambyeolag;
@@ -66,6 +67,13 @@ public class DambyeolagServiceImpl implements DambyeolagService {
 
 
         return dambyeolagMapper.dambyeolagPageTodambyeolagRspDtoPage(dambyeolagPage);
+    }
+
+    @Override
+    public Page<DambyeolagImageRspDto> getDambyeolagPageByMemberIdOrderByCreateTime(int page, long memberId) {
+        Pageable pageable = PageRequest.of(page, 8);
+        Page<Dambyeolag> dambyeolagPage = dambyeolagRepository.findDambyeolagByMemberIdOrderByCreateTimeDesc(pageable, memberId);
+        return dambyeolagMapper.dambyeolagPageToDambyeolagImageRspDto(dambyeolagPage);
     }
 
     @Override

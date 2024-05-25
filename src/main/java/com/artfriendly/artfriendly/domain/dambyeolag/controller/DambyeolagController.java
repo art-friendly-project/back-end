@@ -2,12 +2,14 @@ package com.artfriendly.artfriendly.domain.dambyeolag.controller;
 
 import com.artfriendly.artfriendly.domain.dambyeolag.dto.dambyeolag.DambyeolagDetailsRspDto;
 
+import com.artfriendly.artfriendly.domain.dambyeolag.dto.dambyeolag.DambyeolagImageRspDto;
 import com.artfriendly.artfriendly.domain.dambyeolag.dto.dambyeolag.DambyeolagReqDto;
 import com.artfriendly.artfriendly.domain.dambyeolag.dto.dambyeolag.DambyeolagRspDto;
 import com.artfriendly.artfriendly.domain.dambyeolag.service.dambyeolag.DambyeolagService;
 import com.artfriendly.artfriendly.global.api.RspTemplate;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -32,9 +34,15 @@ public class DambyeolagController {
     }
 
     @GetMapping("/lists")
-    public RspTemplate<Page<DambyeolagRspDto>> getDambyeolags(@NotNull int page, @NotNull long exhibitionId, String sortType) {
+    public RspTemplate<Page<DambyeolagRspDto>> getDambyeolags(@Min(0) int page, @NotNull long exhibitionId, String sortType) {
         Page<DambyeolagRspDto> dambyeolagRspDtos = dambyeolagService.getDambyeolagPageOrderBySortType(page, exhibitionId, sortType);
         return new RspTemplate<>(HttpStatus.OK, "담벼락 "+page+"페이지 조회", dambyeolagRspDtos);
+    }
+
+    @GetMapping("/lists/by-member")
+    public RspTemplate<Page<DambyeolagImageRspDto>> getDambyeolags(@Min(0) int page, @NotNull long memberId) {
+        Page<DambyeolagImageRspDto> dambyeolagRspDtos = dambyeolagService.getDambyeolagPageByMemberIdOrderByCreateTime(page, memberId);
+        return new RspTemplate<>(HttpStatus.OK, "memberId :"+memberId+" 작성한 담벼락", dambyeolagRspDtos);
     }
 
     @DeleteMapping
