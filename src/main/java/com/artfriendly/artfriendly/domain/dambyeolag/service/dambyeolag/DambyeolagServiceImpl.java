@@ -77,6 +77,13 @@ public class DambyeolagServiceImpl implements DambyeolagService {
     }
 
     @Override
+    public Page<DambyeolagImageRspDto> getBookmarkDambyeolagPageOrderByCreateTime(int page, long memberId) {
+        Pageable pageable = PageRequest.of(page, 8);
+        Page<Dambyeolag> dambyeolagPage = dambyeolagRepository.findBookmarkDambyeolagsByMemberIdOrderByLastModifiedTimeDesc(pageable, memberId);
+        return dambyeolagMapper.dambyeolagPageToDambyeolagImageRspDto(dambyeolagPage);
+    }
+
+    @Override
     public Dambyeolag findById(long dambyeolagId) {
         Optional<Dambyeolag> dambyeolag = dambyeolagRepository.findDambyeolagById(dambyeolagId);
 

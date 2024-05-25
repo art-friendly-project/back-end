@@ -14,6 +14,7 @@ public interface DambyeolagService {
     void createDambyeolag(DambyeolagReqDto dambyeolagReqDto, long memberId);
     void deleteDambyeolag(long memberId, long dambyeolagId);
     Page<DambyeolagImageRspDto> getDambyeolagPageByMemberIdOrderByCreateTime(int page, long memberId);
+    Page<DambyeolagImageRspDto> getBookmarkDambyeolagPageOrderByCreateTime(int page, long memberId);
     Dambyeolag findById(long dambyeolagId);
     void deleteBookmark(long memberId, long dambyeolagBookmarkId);
     void deleteBookmarksByMember(Member member);
