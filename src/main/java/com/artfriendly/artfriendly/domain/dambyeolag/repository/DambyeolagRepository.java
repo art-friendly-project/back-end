@@ -31,4 +31,10 @@ public interface DambyeolagRepository extends JpaRepository<Dambyeolag, Long> {
             "WHERE d.member.id = :memberId " +
             "ORDER BY d.createTime DESC ")
     Page<Dambyeolag> findDambyeolagByMemberIdOrderByCreateTimeDesc(Pageable pageable, @Param("memberId") long memberId);
+
+    @Query("SELECT d FROM Dambyeolag d " +
+            "JOIN d.bookmarkList bl " +
+            "WHERE bl.member.id = :memberId " +
+            "order by bl.lastModifiedTime DESC ")
+    Page<Dambyeolag> findBookmarkDambyeolagsByMemberIdOrderByLastModifiedTimeDesc(Pageable pageable, @Param("memberId") long memberId);
 }

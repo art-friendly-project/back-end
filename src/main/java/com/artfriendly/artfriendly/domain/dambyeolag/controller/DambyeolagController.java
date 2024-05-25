@@ -45,6 +45,12 @@ public class DambyeolagController {
         return new RspTemplate<>(HttpStatus.OK, "memberId :"+memberId+" 작성한 담벼락", dambyeolagRspDtos);
     }
 
+    @GetMapping("/lists/bookmarks")
+    public RspTemplate<Page<DambyeolagImageRspDto>> getBookmarksDambyeolags(@AuthenticationPrincipal long memberId, @Min(0) int page) {
+        Page<DambyeolagImageRspDto> dambyeolagImageRspDtos = dambyeolagService.getBookmarkDambyeolagPageOrderByCreateTime(page, memberId);
+        return new RspTemplate<>(HttpStatus.OK, "memberId :"+memberId+" 북마크한 담벼락", dambyeolagImageRspDtos);
+    }
+
     @DeleteMapping
     public RspTemplate<Void> deleteDambyeolag(@AuthenticationPrincipal long memberId, @NotNull long dambyeolagId) {
         dambyeolagService.deleteDambyeolag(memberId, dambyeolagId);
