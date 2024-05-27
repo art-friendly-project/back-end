@@ -2,7 +2,7 @@ package com.artfriendly.artfriendly.domain.member.service;
 
 import com.artfriendly.artfriendly.domain.auth.dto.OAuth2Attributes;
 import com.artfriendly.artfriendly.domain.auth.dto.OAuth2LoginDto;
-import com.artfriendly.artfriendly.domain.member.Event.MemberEventPublisher;
+import com.artfriendly.artfriendly.domain.member.event.MemberEventPublisher;
 import com.artfriendly.artfriendly.domain.member.dto.MemberDetailsRspDto;
 import com.artfriendly.artfriendly.domain.member.dto.MemberUpdateReqDto;
 import com.artfriendly.artfriendly.domain.member.dto.ProfileDto;

@@ -1,4 +1,4 @@
-package com.artfriendly.artfriendly.domain.member.Event;
+package com.artfriendly.artfriendly.domain.member.event;
 
 import com.artfriendly.artfriendly.domain.member.entity.Member;
 import lombok.Getter;
