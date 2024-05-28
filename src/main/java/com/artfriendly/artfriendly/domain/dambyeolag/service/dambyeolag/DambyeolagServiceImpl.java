@@ -19,6 +19,7 @@ import com.artfriendly.artfriendly.domain.member.service.MemberService;
 import com.artfriendly.artfriendly.global.exception.common.BusinessException;
 import com.artfriendly.artfriendly.global.exception.common.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -92,16 +93,21 @@ public class DambyeolagServiceImpl implements DambyeolagService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "exhibitionDetailsCache", allEntries = true)
     public void createDambyeolag(DambyeolagReqDto dambyeolagReqDto, long memberId) {
         Member member = memberService.findById(memberId);
         Exhibition exhibition = exhibitionService.findExhibitionById(dambyeolagReqDto.exhibitionId());
-        Dambyeolag newDambyeolag = dambyeolagMapper.dambyeolagReqDtoToDambyeolag(dambyeolagReqDto, member, exhibition);
 
+        if(exhibitionService.hasDambyeolagBeenWritten(dambyeolagReqDto.exhibitionId(), memberId))
+            throw new BusinessException(ErrorCode.DAMBYEOLAG_ALREADY_EXIST);
+
+        Dambyeolag newDambyeolag = dambyeolagMapper.dambyeolagReqDtoToDambyeolag(dambyeolagReqDto, member, exhibition);
         dambyeolagRepository.save(newDambyeolag);
     }
 
     @Override
     @Transactional
+    @CacheEvict(value = "exhibitionDetailsCache", allEntries = true)
     public void deleteDambyeolag(long memberId, long dambyeolagId) {
         Dambyeolag dambyeolag = findById(dambyeolagId);
         checkDambyeolagOner(dambyeolag, memberId);

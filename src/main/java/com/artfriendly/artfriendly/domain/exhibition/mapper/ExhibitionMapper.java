@@ -71,12 +71,13 @@ public interface ExhibitionMapper {
         return list;
     }
 
-    default ExhibitionDetailsRspDto exhibitionToExhibitionDetailsRspDto(Exhibition exhibition, String checkTemperature, boolean isLike) {
+    default ExhibitionDetailsRspDto exhibitionToExhibitionDetailsRspDto(Exhibition exhibition, String checkTemperature, boolean isLike, boolean hasDambyeolagBeenWritten) {
         return new ExhibitionDetailsRspDto(
                 exhibition.getId(),
                 exhibition.getTemperature(),
                 checkTemperature,
                 isLike,
+                hasDambyeolagBeenWritten,
                 exhibitionInfoToExhibitionInfoRspDto(exhibition.getExhibitionInfo())
         );
     }

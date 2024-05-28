@@ -5,6 +5,7 @@ public record ExhibitionDetailsRspDto(
         Double temperature,
         String checkTemperature,
         boolean isLike,
+        boolean hasDambyeolagWritten,
         ExhibitionInfoRspDto exhibitionInfoRspDto
 ) {
 }

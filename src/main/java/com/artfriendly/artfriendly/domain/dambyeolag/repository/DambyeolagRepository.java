@@ -14,6 +14,10 @@ public interface DambyeolagRepository extends JpaRepository<Dambyeolag, Long> {
             "WHERE d.id = :dambyeolagId")
     Optional<Dambyeolag> findDambyeolagById(@Param("dambyeolagId") long dambyeolagId);
 
+    @Query("SELECT d FROM Dambyeolag d " +
+            "WHERE d.exhibition.id = :exhibitionId AND d.member.id = :memberId ")
+    Optional<Dambyeolag> findDambyeolagByExhibitionIdAndMemberId(@Param("exhibitionId") long exhibitionId, @Param("memberId") long memberId);
+
     // 담벼락 스티커와 북마크가 많이 된 것 부터 정렬
     @Query("SELECT d FROM Dambyeolag d LEFT JOIN d.stickerList s LEFT JOIN d.bookmarkList m " +
             "WHERE d.exhibition.id = :exhibitionId " +
