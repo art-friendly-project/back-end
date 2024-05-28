@@ -37,7 +37,7 @@ spring:
             client-authentication-method: client_secret_post
         provider:
           kakao:
-            authorization-uri: https://kauth.kakao.com/oauth/authorize # 사용자 인가 코드 받아오기 ?prompt=login-> 기존 로그인에 상관없이 로그인
+            authorization-uri: https://kauth.kakao.com/oauth/authorize?prompt=login # 사용자 인가 코드 받아오기 ?prompt=login-> 기존 로그인에 상관없이 로그인
             token-uri: https://kauth.kakao.com/oauth/token # 토큰 받아오기
             user-info-uri: https://kapi.kakao.com/v2/user/me # 사용자 정보 가져오기
             user-name-attribute: id # 카카오톡의 경우 "id"를 사용한다

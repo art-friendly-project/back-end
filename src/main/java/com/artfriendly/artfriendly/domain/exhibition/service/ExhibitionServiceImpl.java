@@ -1,5 +1,7 @@
 package com.artfriendly.artfriendly.domain.exhibition.service;
 
+import com.artfriendly.artfriendly.domain.dambyeolag.entity.Dambyeolag;
+import com.artfriendly.artfriendly.domain.dambyeolag.repository.DambyeolagRepository;
 import com.artfriendly.artfriendly.domain.exhibition.cache.PopularExhibitionCache;
 import com.artfriendly.artfriendly.domain.exhibition.dto.ExhibitionDetailsRspDto;
 import com.artfriendly.artfriendly.domain.exhibition.dto.ExhibitionRankRspDto;
@@ -35,6 +37,7 @@ public class ExhibitionServiceImpl implements ExhibitionService{
     private final PopularExhibitionCache popularExhibitionCache;
     private final MemberService memberService;
     private final ExhibitionRepository exhibitionRepository;
+    private final DambyeolagRepository dambyeolagRepository;
     private final ExhibitionInfoRepository exhibitionInfoRepository;
     private final ExhibitionHopeRepository exhibitionHopeRepository;
     private final ExhibitionLikeRepository exhibitionLikeRepository;
@@ -72,10 +75,11 @@ public class ExhibitionServiceImpl implements ExhibitionService{
         Exhibition exhibition = findExhibitionById(exhibitionId);
         String checkTemperature = checkExhibitionTemperature(memberId, exhibition.getExhibitionHopeList());
         boolean isLike = isLike(memberId, exhibition.getExhibitionLikeList());
+        boolean hasDambyeolagBeenWritten = hasDambyeolagBeenWritten(exhibitionId, memberId);
 
         addExhibitionView(memberId, exhibitionId);
 
-        return exhibitionMapper.exhibitionToExhibitionDetailsRspDto(exhibition, checkTemperature, isLike);
+        return exhibitionMapper.exhibitionToExhibitionDetailsRspDto(exhibition, checkTemperature, isLike, hasDambyeolagBeenWritten);
     }
 
     @Override
@@ -154,7 +158,12 @@ public class ExhibitionServiceImpl implements ExhibitionService{
 
     @Override
     @Transactional
-    @CacheEvict(value = "exhibitionDetailsCache", allEntries = true)
+    @Caching(evict =  {
+            @CacheEvict(value = "exhibitionDetailsCache", allEntries = true),
+            @CacheEvict(value = "exhibitionPageCache", allEntries = true),
+            @CacheEvict(value = "interestExhibitionPageCache", allEntries = true),
+            @CacheEvict(value = "endingExhibitionCache", allEntries = true, cacheManager = "endingExhibitionCache")
+    })
     public void addExhibitionHope(long memberId, long exhibitionId, int hopeIndex) {
         Member member = memberService.findById(memberId);
         Exhibition exhibition = findExhibitionById(exhibitionId);
@@ -175,7 +184,10 @@ public class ExhibitionServiceImpl implements ExhibitionService{
 
     @Override
     @Transactional
-    @CacheEvict(value = "exhibitionDetailsCache", allEntries = true)
+    @Caching(evict =  {
+            @CacheEvict(value = "exhibitionDetailsCache", allEntries = true),
+            @CacheEvict(value = "exhibitionPageCache", allEntries = true)
+    })
     public void updateExhibitionHope(long memberId, long exhibitionId, int hopeIndex) {
         ExhibitionHope exhibitionHope = findExhibitionHopeByMemberIdAndExhibitionHope(memberId, exhibitionId);
         ExhibitionHope.Hope hope = mapIndexToHope(hopeIndex);
@@ -191,7 +203,10 @@ public class ExhibitionServiceImpl implements ExhibitionService{
 
     @Override
     @Transactional
-    @CacheEvict(value = "exhibitionDetailsCache", allEntries = true)
+    @Caching(evict =  {
+            @CacheEvict(value = "exhibitionDetailsCache", allEntries = true),
+            @CacheEvict(value = "exhibitionPageCache", allEntries = true)
+    })
     public void deleteExhibitionHope(long memberId, long exhibitionId) {
         ExhibitionHope exhibitionHope = findExhibitionHopeByMemberIdAndExhibitionHope(memberId, exhibitionId);
 
@@ -271,6 +286,12 @@ public class ExhibitionServiceImpl implements ExhibitionService{
                 continue;
             exhibitionInfoRepository.save(exhibitionInfo);
         }
+    }
+
+    @Override
+    public boolean hasDambyeolagBeenWritten(long exhibitionId, long memberId) {
+        Optional<Dambyeolag> dambyeolag = dambyeolagRepository.findDambyeolagByExhibitionIdAndMemberId(exhibitionId, memberId);
+        return dambyeolag.isPresent();
     }
 
     private ExhibitionHope.Hope mapIndexToHope(int hopeIndex) {

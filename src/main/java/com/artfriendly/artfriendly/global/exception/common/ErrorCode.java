@@ -58,6 +58,7 @@ public enum ErrorCode {
     // Dambyeolag
     DAMBYEOLAG_NOT_FOUND(404, "담벼락이 존재하지 않습니다."),
     DAMBYEOLAG_NOT_ACCESS(403, "해당 담벼락 관련 권한이 없습니다."),
+    DAMBYEOLAG_ALREADY_EXIST(400, "해당 전시에 이미 담벼락이 작성되었습니다."),
     DAMBYEOLAGBOOKMARK_NOT_FOUND(404, "해당 북마크가 존재하지 않습니다."),
     DAMBYEOLAGBOOKMARK_NOT_ACCESS(403, "해당 북마크 관련 권한이 없습니다."),
 

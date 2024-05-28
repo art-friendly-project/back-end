@@ -50,7 +50,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         queryParams.add("isSignUp", isSignUp.toString());
 
         return UriComponentsBuilder
-                .fromHttpUrl("http://192.168.13.9:3000/login")
+                .fromHttpUrl("http://localhost:3000/login")
                 .queryParams(queryParams)
                 .build()
                 .toUri();

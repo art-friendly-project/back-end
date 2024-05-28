@@ -52,4 +52,6 @@ public interface ExhibitionService {
     void clearPopularExhibitionCache();
 
     void updateExhibitionList(List<ExhibitionInfo> updateExhibitionInfoList);
+
+    boolean hasDambyeolagBeenWritten(long exhibitionId, long memberId);
 }
