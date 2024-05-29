@@ -38,6 +38,9 @@ public class Member extends BaseTimeEntity {
     @Column
     private String selfIntro;
 
+    @Column
+    private MemberStatus status = MemberStatus.MEMBER_ACTIVE;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mbti_id")
     private Mbti mbti;
@@ -61,6 +64,8 @@ public class Member extends BaseTimeEntity {
     List<ExhibitionHope> exhibitionHopeList = new ArrayList<>();
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<ExhibitionView> exhibitionViewList = new ArrayList<>();
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    RefreshToken refreshToken;
 
     @Builder
     public Member(Long id, String email, String nickName, MemberImage image, String selfIntro, List<String> role, List<String> artPreferenceTypeList, Mbti mbti) {
@@ -92,11 +97,26 @@ public class Member extends BaseTimeEntity {
         this.nickName = "탈퇴한 멤버";
         this.selfIntro = null;
         this.mbti = null;
+        this.status = MemberStatus.MEMBER_QUIT;
         this.role = null;
         this.artPreferenceTypeList = null;
+        this.refreshToken = null;
+    }
+
+    @Getter
+    public enum MemberStatus {
+        MEMBER_ACTIVE("활동중"),
+        MEMBER_QUIT("탈퇴 상태");
+
+        private final String status;
+
+        MemberStatus(String status) {
+            this.status = status;
+        }
     }
 
     public void setImage(MemberImage memberImage) { this.image = memberImage; }
+    public void setRefreshToken(RefreshToken refreshToken) { this.refreshToken = refreshToken; }
     public void setDambyeolagBookmarkList(List<DambyeolagBookmark> dambyeolagBookmarkList) { this.dambyeolagBookmarkList = dambyeolagBookmarkList; }
     public void grantRoles(List<String> role) { this.role.addAll(role); }
 }
