@@ -114,6 +114,10 @@ public interface ExhibitionMapper {
                 rank,
                 exhibition.getExhibitionInfo().getTitle(),
                 exhibition.getExhibitionInfo().getImageUrl(),
+                exhibition.getExhibitionInfo().getStartDate(),
+                exhibition.getExhibitionInfo().getEndDate(),
+                exhibition.getExhibitionInfo().getPlace(),
+                exhibition.getExhibitionInfo().getArea(),
                 rankShift
         );
     }
