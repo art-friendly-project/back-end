@@ -1,6 +1,7 @@
 package com.artfriendly.artfriendly.domain.dambyeolag.entity;
 
 import com.artfriendly.artfriendly.domain.common.BaseTimeEntity;
+import com.artfriendly.artfriendly.domain.dambyeolag.dto.dambyeolag.DambyeolagUpdateDto;
 import com.artfriendly.artfriendly.domain.exhibition.entity.Exhibition;
 import com.artfriendly.artfriendly.domain.member.entity.Member;
 import jakarta.persistence.*;
@@ -49,5 +50,10 @@ public class Dambyeolag extends BaseTimeEntity {
         this.body = body;
         this.member = member;
         this.exhibition = exhibition;
+    }
+
+    public void updateForm(DambyeolagUpdateDto dambyeolagUpdateDto) {
+        this.title = dambyeolagUpdateDto.title();
+        this.body = dambyeolagUpdateDto.body();
     }
 }
