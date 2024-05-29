@@ -2,6 +2,7 @@ package com.artfriendly.artfriendly.domain.member.service;
 
 import com.artfriendly.artfriendly.domain.auth.dto.OAuth2Attributes;
 import com.artfriendly.artfriendly.domain.auth.dto.OAuth2LoginDto;
+import com.artfriendly.artfriendly.domain.member.entity.RefreshToken;
 import com.artfriendly.artfriendly.domain.member.event.MemberEventPublisher;
 import com.artfriendly.artfriendly.domain.member.dto.MemberDetailsRspDto;
 import com.artfriendly.artfriendly.domain.member.dto.MemberUpdateReqDto;
@@ -80,6 +81,12 @@ public class MemberServiceImpl implements MemberService {
                 .member(member)
                 .build();
 
+        RefreshToken refreshToken = RefreshToken.builder()
+                .token(null)
+                .member(member)
+                .build();
+
+        member.setRefreshToken(refreshToken);
         member.setImage(memberImage);
         return memberRepository.save(member);
     }
@@ -99,6 +106,8 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public ProfileDto getProfileDto(long memberId) {
         Member member = findById(memberId);
+        if(!member.getStatus().equals(Member.MemberStatus.MEMBER_ACTIVE))
+            throw new BusinessException(ErrorCode.USER_STATUS_WITHDRAWN);
         return memberMapper.memberToProfileDto(member);
     }
 

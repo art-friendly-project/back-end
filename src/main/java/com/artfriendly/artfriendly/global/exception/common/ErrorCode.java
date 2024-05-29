@@ -32,6 +32,7 @@ public enum ErrorCode {
 
     // 사용자
     USER_NOT_FOUND(404, "해당 사용자가 존재하지 않습니다."),
+    USER_STATUS_WITHDRAWN(400, "해당 유저는 이미 탈퇴한 유저입니다."),
 
     // 파일
     INVALID_FILE_EXTENSION(400, "파일 확장자가 유효하지 않습니다."),
