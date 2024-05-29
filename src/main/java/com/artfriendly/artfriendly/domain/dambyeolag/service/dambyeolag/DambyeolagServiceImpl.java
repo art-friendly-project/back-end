@@ -1,9 +1,6 @@
 package com.artfriendly.artfriendly.domain.dambyeolag.service.dambyeolag;
 
-import com.artfriendly.artfriendly.domain.dambyeolag.dto.dambyeolag.DambyeolagDetailsRspDto;
-import com.artfriendly.artfriendly.domain.dambyeolag.dto.dambyeolag.DambyeolagImageRspDto;
-import com.artfriendly.artfriendly.domain.dambyeolag.dto.dambyeolag.DambyeolagReqDto;
-import com.artfriendly.artfriendly.domain.dambyeolag.dto.dambyeolag.DambyeolagRspDto;
+import com.artfriendly.artfriendly.domain.dambyeolag.dto.dambyeolag.*;
 import com.artfriendly.artfriendly.domain.dambyeolag.entity.Dambyeolag;
 import com.artfriendly.artfriendly.domain.dambyeolag.entity.DambyeolagBookmark;
 import com.artfriendly.artfriendly.domain.dambyeolag.entity.Sticker;
@@ -108,6 +105,16 @@ public class DambyeolagServiceImpl implements DambyeolagService {
     @Override
     @Transactional
     @CacheEvict(value = "exhibitionDetailsCache", allEntries = true)
+    public void updateDambyeolag(long memberId, DambyeolagUpdateDto updateDto) {
+        Dambyeolag dambyeolag = findById(updateDto.dambyeolagId());
+        checkDambyeolagOner(dambyeolag, memberId);
+
+        dambyeolag.updateForm(updateDto);
+    }
+
+    @Override
+    @Transactional
+    @CacheEvict(value = "exhibitionDetailsCache", allEntries = true)
     public void deleteDambyeolag(long memberId, long dambyeolagId) {
         Dambyeolag dambyeolag = findById(dambyeolagId);
         checkDambyeolagOner(dambyeolag, memberId);
@@ -128,6 +135,7 @@ public class DambyeolagServiceImpl implements DambyeolagService {
     public void deleteBookmarksByMember(Member member) {
         List<DambyeolagBookmark> dambyeolagBookmarkList = dambyeolagBookmarkRepository.findDambyeolagBookmarkByMemberId(member.getId());
         member.setDambyeolagBookmarkList(null);
+
         dambyeolagBookmarkRepository.deleteAll(dambyeolagBookmarkList);
     }
 

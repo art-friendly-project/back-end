@@ -1,10 +1,6 @@
 package com.artfriendly.artfriendly.domain.dambyeolag.controller;
 
-import com.artfriendly.artfriendly.domain.dambyeolag.dto.dambyeolag.DambyeolagDetailsRspDto;
-
-import com.artfriendly.artfriendly.domain.dambyeolag.dto.dambyeolag.DambyeolagImageRspDto;
-import com.artfriendly.artfriendly.domain.dambyeolag.dto.dambyeolag.DambyeolagReqDto;
-import com.artfriendly.artfriendly.domain.dambyeolag.dto.dambyeolag.DambyeolagRspDto;
+import com.artfriendly.artfriendly.domain.dambyeolag.dto.dambyeolag.*;
 import com.artfriendly.artfriendly.domain.dambyeolag.service.dambyeolag.DambyeolagService;
 import com.artfriendly.artfriendly.global.api.RspTemplate;
 
@@ -31,6 +27,12 @@ public class DambyeolagController {
     public RspTemplate<Void> createDambyeolag(@AuthenticationPrincipal long memberId, @Valid @RequestBody DambyeolagReqDto dambyeolagReqDto) {
         dambyeolagService.createDambyeolag(dambyeolagReqDto, memberId);
         return new RspTemplate<>(HttpStatus.CREATED, "담벼락 생성");
+    }
+
+    @PatchMapping
+    public RspTemplate<Void> updateDambyeolag(@AuthenticationPrincipal long memberId, @Valid @RequestBody DambyeolagUpdateDto dambyeolagUpdateDto) {
+        dambyeolagService.updateDambyeolag(memberId, dambyeolagUpdateDto);
+        return new RspTemplate<>(HttpStatus.OK, "담벼락 수정");
     }
 
     @GetMapping("/lists")
