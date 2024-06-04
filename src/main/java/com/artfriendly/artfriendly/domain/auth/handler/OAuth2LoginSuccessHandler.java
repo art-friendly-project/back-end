@@ -50,7 +50,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         queryParams.add("isSignUp", isSignUp.toString());
 
         return UriComponentsBuilder
-                .fromHttpUrl("http://localhost:3000/login")
+                .fromHttpUrl("https://front-end-seven-eta.vercel.app")
                 .queryParams(queryParams)
                 .build()
                 .toUri();
