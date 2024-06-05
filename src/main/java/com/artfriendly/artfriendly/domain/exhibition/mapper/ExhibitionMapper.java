@@ -39,7 +39,17 @@ public interface ExhibitionMapper {
         }
         exhibitionInfo.place( perforInfo.getPlace() );
         exhibitionInfo.realmName( perforInfo.getRealmName() );
-        exhibitionInfo.area( perforInfo.getArea().equals("경기") || perforInfo.getArea().equals("인천") ? "경기인천" : perforInfo.getArea() );
+
+        String area = perforInfo.getArea();
+        switch (area) {
+            case "경기", "인천" -> exhibitionInfo.area("경기/인천");
+            case "경남", "부산", "울산" -> exhibitionInfo.area("경남/부산");
+            case "경북", "대구" -> exhibitionInfo.area("경북/대구");
+            case "충북", "충남", "대전", "세종" -> exhibitionInfo.area("충청/대전");
+            case "전남", "전북", "광주" -> exhibitionInfo.area("전라/광주");
+            
+            default -> exhibitionInfo.area(area);
+        }
         exhibitionInfo.imageUrl( perforInfo.getImgUrl() );
         exhibitionInfo.gpsX( perforInfo.getGpsX() );
         exhibitionInfo.gpsY( perforInfo.getGpsY() );
