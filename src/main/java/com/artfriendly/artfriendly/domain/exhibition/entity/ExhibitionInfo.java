@@ -1,5 +1,6 @@
 package com.artfriendly.artfriendly.domain.exhibition.entity;
 
+import com.artfriendly.artfriendly.domain.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ExhibitionInfo {
+public class ExhibitionInfo extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,6 +26,9 @@ public class ExhibitionInfo {
     @Column
     @NotBlank
     private String title;
+
+    @Column(length = 2000)
+    private String description;
 
     @Column
     @NotNull
@@ -83,10 +87,11 @@ public class ExhibitionInfo {
     private Exhibition exhibition;
 
     @Builder
-    public ExhibitionInfo(Long id, int seq, String title, LocalDate startDate, LocalDate endDate, String place, String realmName, String area, String imageUrl, double gpsX, double gpsY, String ticketingUrl, String phone, String price, String placeAddr, String progressStatus) {
+    public ExhibitionInfo(Long id, int seq, String title, String description, LocalDate startDate, LocalDate endDate, String place, String realmName, String area, String imageUrl, double gpsX, double gpsY, String ticketingUrl, String phone, String price, String placeAddr, String progressStatus) {
         this.id = id;
         this.seq = seq;
         this.title = title;
+        this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
         this.place = place;
