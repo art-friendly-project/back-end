@@ -62,7 +62,7 @@ jobs:
 
       # AWS 세션 매니저 접속
       - name: Start Session Manager session
-        run: aws ssm start-session --target i-0636127748a0eded5
+        run: aws ssm start-session --target i-0a833ba6bc053453b
 
       # 배포
       - name: Deploy to Server
