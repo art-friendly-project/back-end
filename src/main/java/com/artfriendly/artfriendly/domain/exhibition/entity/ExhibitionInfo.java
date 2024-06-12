@@ -27,8 +27,8 @@ public class ExhibitionInfo extends BaseTimeEntity {
     @NotBlank
     private String title;
 
-    @Column(length = 2000)
-    private String description;
+    @Column(length = 500)
+    private String detailInfoUrl;
 
     @Column
     @NotNull
@@ -87,11 +87,11 @@ public class ExhibitionInfo extends BaseTimeEntity {
     private Exhibition exhibition;
 
     @Builder
-    public ExhibitionInfo(Long id, int seq, String title, String description, LocalDate startDate, LocalDate endDate, String place, String realmName, String area, String imageUrl, double gpsX, double gpsY, String ticketingUrl, String phone, String price, String placeAddr, String progressStatus) {
+    public ExhibitionInfo(Long id, int seq, String title, String detailInfoUrl, LocalDate startDate, LocalDate endDate, String place, String realmName, String area, String imageUrl, double gpsX, double gpsY, String ticketingUrl, String phone, String price, String placeAddr, String progressStatus) {
         this.id = id;
         this.seq = seq;
         this.title = title;
-        this.description = description;
+        this.detailInfoUrl = detailInfoUrl;
         this.startDate = startDate;
         this.endDate = endDate;
         this.place = place;
