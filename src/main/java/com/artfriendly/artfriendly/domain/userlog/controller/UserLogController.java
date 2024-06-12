@@ -20,6 +20,6 @@ public class UserLogController {
     public RspTemplate<Void> createLocationInfoLog(@AuthenticationPrincipal long memberId) {
         userLogService.createLocationInfoLog(memberId);
 
-        return new RspTemplate<>(HttpStatus.OK, "위치 정보 로그 저장 완료");
+        return new RspTemplate<>(HttpStatus.CREATED, "위치 정보 로그 저장 완료");
     }
 }

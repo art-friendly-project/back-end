@@ -31,6 +31,6 @@ public class MemberTermController {
     public RspTemplate<Void> initMemberTerms(@AuthenticationPrincipal long memberId) {
         termService.initTerms();
 
-        return new RspTemplate<>(HttpStatus.OK, "약관 데이터 초기화");
+        return new RspTemplate<>(HttpStatus.CREATED, "약관 데이터 초기화");
     }
 }
