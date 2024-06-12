@@ -15,10 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Component
 @RequiredArgsConstructor
@@ -28,10 +25,6 @@ public class JwtTokenizer {
     @Getter
     @Value("${jwt.key}")
     private String secretKey;       // 토큰 시크릿 키
-
-    @Getter
-    @Value("${jwt.access-token-expiration-minutes}")
-    private int accessTokenExpirationMinutes;     // accessToken 만료 시간
 
     @Getter
     @Value("${jwt.refresh-token-expiration-minutes}")
@@ -46,9 +39,9 @@ public class JwtTokenizer {
         return TokenResponse.builder()
                 .authScheme("Bearer")
                 .accessToken(accessToken)
-                .accessTokenExp(getTokenExpiration(this.accessTokenExpirationMinutes))
+                .accessTokenExp(getAccessTokenExpiration())
                 .refreshToken(refreshToken)
-                .refreshTokenExp(getTokenExpiration(this.refreshTokenExpirationMinutes))
+                .refreshTokenExp(getRefreshTokenExpiration(this.refreshTokenExpirationMinutes))
                 .role(member.getRole().toString())
                 .username(member.getNickName())
                 .build();
@@ -57,7 +50,7 @@ public class JwtTokenizer {
     public String generateAccessToken(Map<String, Object> claims,
                                       String audience) {
         Key key = createHmacShaKeyFromSecretKey(this.secretKey);
-        Date expiration = getTokenExpiration(this.accessTokenExpirationMinutes);
+        Date expiration = getAccessTokenExpiration();
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -76,7 +69,7 @@ public class JwtTokenizer {
 
     public String generateRefreshToken() {
         Key key = createHmacShaKeyFromSecretKey(this.secretKey);
-        Date expiration = getTokenExpiration(this.refreshTokenExpirationMinutes);
+        Date expiration = getRefreshTokenExpiration(this.refreshTokenExpirationMinutes);
 
         return Jwts.builder()
                 .setIssuedAt(Calendar.getInstance().getTime())
@@ -125,9 +118,23 @@ public class JwtTokenizer {
                 .parseClaimsJws(jws);
     }
 
-    private Date getTokenExpiration(int expirationMinutes) {
-        Calendar calendar = Calendar.getInstance();
+    private Date getRefreshTokenExpiration(int expirationMinutes) {
+        TimeZone timeZone = TimeZone.getTimeZone("Asia/Seoul");
+        Calendar calendar = Calendar.getInstance(timeZone);
         calendar.add(Calendar.MINUTE, expirationMinutes);
+
+        return calendar.getTime();
+    }
+
+    private Date getAccessTokenExpiration() {
+        TimeZone timeZone = TimeZone.getTimeZone("Asia/Seoul");
+        Calendar calendar = Calendar.getInstance(timeZone);
+
+        // 자정 시간 설정
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        calendar.set(Calendar.MILLISECOND, 999);
 
         return calendar.getTime();
     }

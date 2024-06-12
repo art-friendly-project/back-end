@@ -6,6 +6,7 @@ import com.artfriendly.artfriendly.domain.member.entity.Member;
 import com.artfriendly.artfriendly.domain.auth.cache.OAuthOTUCache;
 import com.artfriendly.artfriendly.domain.auth.dto.TokenResponse;
 import com.artfriendly.artfriendly.domain.auth.jwt.JwtTokenizer;
+import com.artfriendly.artfriendly.domain.userlog.service.UserLogService;
 import com.artfriendly.artfriendly.global.api.RspTemplate;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ public class OAuthMemberController {
     private final OAuthOTUCache oAuthOTUCache;
     private final JwtTokenizer jwtTokenizer;
     private final MemberService memberService;
+    private final UserLogService userLogService;
 
     @GetMapping("/token")
     public RspTemplate<TokenResponse> getToken(String code) {
@@ -26,12 +28,15 @@ public class OAuthMemberController {
         Member member = memberService.findById(memberId);
 
         TokenResponse tokenResponse = jwtTokenizer.generateTokens(member);
+        userLogService.upUserCount();
+
         return new RspTemplate<>(HttpStatus.OK, "토큰 발급 성공", tokenResponse);
     }
 
     @PostMapping("/token/renew")
     public RspTemplate<TokenResponse> renewTokens(@RequestBody @Valid RefreshTokenRequest tokenRequest) {
         TokenResponse tokenResponse = jwtTokenizer.renewTokens(tokenRequest.refreshToken());
+
         return new RspTemplate<>(HttpStatus.OK, "토큰 재발급 성공", tokenResponse);
     }
 
