@@ -9,6 +9,7 @@ import com.artfriendly.artfriendly.domain.exhibition.entity.ExhibitionHope;
 import com.artfriendly.artfriendly.domain.exhibition.entity.ExhibitionView;
 import com.artfriendly.artfriendly.domain.mbti.entity.Mbti;
 import com.artfriendly.artfriendly.domain.term.entity.MemberTerm;
+import com.artfriendly.artfriendly.domain.userlog.entity.LocationInfoLog;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -69,6 +70,8 @@ public class Member extends BaseTimeEntity {
     RefreshToken refreshToken;
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<MemberTerm> memberTerms = new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<LocationInfoLog> locationInfoLogs = new ArrayList<>();
 
     @Builder
     public Member(Long id, String email, String nickName, MemberImage image, String selfIntro, List<String> role, List<String> artPreferenceTypeList, Mbti mbti) {
