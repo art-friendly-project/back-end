@@ -6,6 +6,7 @@ public record ExhibitionInfoRspDto(
         Long id,
         int seq,
         String title,
+        String detailInfoUrl,
         LocalDate startDate,
         LocalDate endDate,
         String place,
