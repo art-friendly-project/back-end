@@ -56,6 +56,10 @@ dependencies {
 	implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0'
 	runtimeOnly 'com.sun.xml.bind:jaxb-impl:4.0.0'
 
+	// 프로메테우스 관련 의존성
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'io.micrometer:micrometer-registry-prometheus'
+
 }
 
 tasks.named('test') {
