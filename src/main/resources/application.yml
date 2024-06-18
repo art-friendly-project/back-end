@@ -55,6 +55,27 @@ cloud:
     stack:
       auto: false
 
+# 엔트포인트 허용 설정(프로메테우스)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+  endpoint:
+    prometheus:
+      enabled: true
+
+# 스레드 풀 설정
+server:
+  tomcat:
+    threads:
+      max: 200
+      min-spare: 10
+    max-connections: 8192
+    accept-count: 100
+    connection-timeout: 20000
+  port: 8080
+
 # 파일 경로 이름 설정
 file:
   path:
@@ -83,13 +104,3 @@ profile:
 admin:
   email: ${ADMIN_EMAIL}
 
-# 스레드 풀 설정
-server:
-  tomcat:
-    threads:
-      max: 200
-      min-spare: 10
-    max-connections: 8192
-    accept-count: 100
-    connection-timeout: 20000
-  port: 8080

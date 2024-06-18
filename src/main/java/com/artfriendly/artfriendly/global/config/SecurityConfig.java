@@ -48,6 +48,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/oauth/**").permitAll()
+                        .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("exhibitions/lists/popular/clear").hasAnyAuthority("ROLE_ADMIN")
                         .requestMatchers("/terms/init").hasAnyAuthority("ROLE_ADMIN")
                         .requestMatchers("apis/**").hasAnyAuthority("ROLE_ADMIN")
