@@ -55,7 +55,7 @@ public class Exhibition {
 
         double totalPoint = viewPoint + likePoint + hopePoint;
 
-        this.temperature = Math.max(totalPoint, 0.0);
+        this.temperature = Math.max(Math.floor(totalPoint * 100) / 100.0, 0.0);
 
     }
 }
