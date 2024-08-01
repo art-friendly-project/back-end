@@ -4,83 +4,15 @@ import com.artfriendly.artfriendly.domain.exhibition.dto.ExhibitionDetailsRspDto
 import com.artfriendly.artfriendly.domain.exhibition.dto.ExhibitionInfoRspDto;
 import com.artfriendly.artfriendly.domain.exhibition.dto.ExhibitionRankRspDto;
 import com.artfriendly.artfriendly.domain.exhibition.dto.ExhibitionRspDto;
-import com.artfriendly.artfriendly.domain.exhibition.dto.apiIntegrationDto.callExhibitionDto.PerforInfo;
 import com.artfriendly.artfriendly.domain.exhibition.entity.Exhibition;
 import com.artfriendly.artfriendly.domain.exhibition.entity.ExhibitionInfo;
-import com.artfriendly.artfriendly.global.utils.LocalDateFormatter;
 import org.mapstruct.Mapper;
 import org.springframework.data.domain.Page;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ExhibitionMapper {
-    default ExhibitionInfo perforInfoToExhibitionInfo(PerforInfo perforInfo) {
-        if ( perforInfo == null ) {
-            return null;
-        }
-
-        LocalDate startDate = LocalDateFormatter.converToLocalDate(perforInfo.getStartDate(), "yyyyMMdd");
-        LocalDate endDate =  LocalDateFormatter.converToLocalDate(perforInfo.getEndDate(), "yyyyMMdd");
-
-        ExhibitionInfo.ExhibitionInfoBuilder exhibitionInfo = ExhibitionInfo.builder();
-
-        exhibitionInfo.seq( perforInfo.getSeq() );
-        exhibitionInfo.title( perforInfo.getTitle() );
-
-        if ( perforInfo.getStartDate() != null ) {
-            exhibitionInfo.startDate( startDate );
-        }
-        if ( perforInfo.getEndDate() != null ) {
-            exhibitionInfo.endDate( endDate );
-        }
-        exhibitionInfo.place( perforInfo.getPlace() );
-        exhibitionInfo.realmName( perforInfo.getRealmName() );
-
-        String area = perforInfo.getArea();
-        switch (area) {
-            case "경기", "인천" -> exhibitionInfo.area("경기/인천");
-            case "경남", "부산", "울산" -> exhibitionInfo.area("경남/부산");
-            case "경북", "대구" -> exhibitionInfo.area("경북/대구");
-            case "충북", "충남", "대전", "세종" -> exhibitionInfo.area("충청/대전");
-            case "전남", "전북", "광주" -> exhibitionInfo.area("전라/광주");
-            
-            default -> exhibitionInfo.area(area);
-        }
-        exhibitionInfo.imageUrl( perforInfo.getImgUrl() );
-        exhibitionInfo.gpsX( perforInfo.getGpsX() );
-        exhibitionInfo.gpsY( perforInfo.getGpsY() );
-        exhibitionInfo.ticketingUrl( perforInfo.getUrl() );
-        exhibitionInfo.phone( perforInfo.getPhone() );
-        exhibitionInfo.price( perforInfo.getPrice() );
-        exhibitionInfo.placeAddr( perforInfo.getPlaceAddr() );
-
-        LocalDate now = LocalDate.now();
-
-        if(now.isBefore(startDate))
-            exhibitionInfo.progressStatus("scheduled");
-        else
-            exhibitionInfo.progressStatus("inProgress");
-
-        return exhibitionInfo.build();
-    }
-
-    default List<ExhibitionInfo> perforInfosToExhibitionInfos(List<PerforInfo> perforInfos) {
-        if ( perforInfos == null ) {
-            return Collections.emptyList();
-        }
-
-        List<ExhibitionInfo> list = new ArrayList<>(perforInfos.size());
-        for ( PerforInfo perforInfo : perforInfos ) {
-            list.add( perforInfoToExhibitionInfo( perforInfo ) );
-        }
-
-        return list;
-    }
-
     default ExhibitionDetailsRspDto exhibitionToExhibitionDetailsRspDto(Exhibition exhibition, String checkTemperature, boolean isLike, boolean hasDambyeolagBeenWritten) {
         return new ExhibitionDetailsRspDto(
                 exhibition.getId(),

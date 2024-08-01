@@ -124,22 +124,6 @@ public class ExhibitionInfo extends BaseTimeEntity {
         this.progressStatus = updateExhibitionInfo.getProgressStatus();
     }
 
-    public void updateProgressStatus() {
-        LocalDate now = LocalDate.now();
-        // 종료 날짜가 지난 경우
-        if (now.isAfter(this.getEndDate())) {
-            this.progressStatus = "ended";
-        }
-        // 현재 날짜가 시작 날짜와 같거나 이후이며, 종료 날짜 이전인 경우
-        else if (!now.isBefore(this.getStartDate()) && now.isBefore(this.getEndDate())) {
-            this.progressStatus = "inProgress";
-        }
-        // 시작 날짜가 아직 오지 않은 경우
-        else if (now.isBefore(this.getStartDate())) {
-            this.progressStatus = "scheduled";
-        }
-    }
-
     public void setExhibition(Exhibition exhibition) {
         this.exhibition = exhibition;
     }
