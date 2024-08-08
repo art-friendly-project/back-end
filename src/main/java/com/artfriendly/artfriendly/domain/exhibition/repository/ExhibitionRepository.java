@@ -16,7 +16,7 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
     @Query(value = "SELECT e.* FROM exhibition e " +
             "INNER JOIN exhibition_info ei ON ei.exhibition_id = e.id " +
             "WHERE ei.progress_status = :progressStatus AND " +
-            "ei.area = :area " +
+            "ei.area IN :areas " + // 변경된 부분
             "ORDER BY e.temperature DESC, " +
             "CASE " +
             "WHEN ei.title REGEXP '^[가-힣]' THEN 0 " +
@@ -27,16 +27,16 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
             countQuery = "SELECT COUNT(*) FROM exhibition e " +
                     "INNER JOIN exhibition_info ei ON ei.exhibition_id = e.id " +
                     "WHERE ei.progress_status = :progressStatus AND " +
-                    "ei.area = :area ",
+                    "ei.area IN :areas",
             nativeQuery = true)
     Page<Exhibition> findExhibitionByOrderByTemperatureDesc(Pageable pageable,
                                                             @Param("progressStatus") String progressStatus,
-                                                            @Param("area") String area);
+                                                            @Param("areas") List<String> areas);
 
     @Query(value = "SELECT e.* FROM exhibition e " +
             "INNER JOIN exhibition_info ei ON ei.exhibition_id = e.id " +
             "WHERE ei.progress_status = :progressStatus AND " +
-            "ei.area = :area " +
+            "ei.area IN :areas " +
             "ORDER BY ABS(DATEDIFF(ei.start_date, :now)) ASC, " +
             "CASE " +
             "WHEN ei.title REGEXP '^[가-힣]' THEN 0 " +
@@ -47,11 +47,11 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
             countQuery = "SELECT COUNT(*) FROM exhibition e " +
                     "INNER JOIN exhibition_info ei ON ei.exhibition_id = e.id " +
                     "WHERE ei.progress_status = :progressStatus AND " +
-                    "ei.area = :area ",
+                    "ei.area IN :areas ",
             nativeQuery = true)
     Page<Exhibition> findExhibitionByOrderByStartDateDesc(Pageable pageable,
                                                             @Param("progressStatus") String progressStatus,
-                                                            @Param("area") String area,
+                                                            @Param("areas") List<String> areas,
                                                             @Param("now") LocalDate now);
 
     @Query(value = "SELECT e.* FROM exhibition e  " +

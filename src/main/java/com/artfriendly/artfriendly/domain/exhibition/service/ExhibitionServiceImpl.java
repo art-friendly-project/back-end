@@ -25,9 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Primary
 @Service
@@ -88,13 +86,25 @@ public class ExhibitionServiceImpl implements ExhibitionService{
         memberService.findById(memberId);
 
         Pageable pageable = PageRequest.of(page, 8);
-        Page<Exhibition> exhibitionPage = Page.empty();
+        Page<Exhibition> exhibitionPage;
 
-        if(sortType.equals("popular")) {
-            exhibitionPage = exhibitionRepository.findExhibitionByOrderByTemperatureDesc(pageable, progressStatus, area);
-        }
-        else if(sortType.equals("recent")) {
-            exhibitionPage = exhibitionRepository.findExhibitionByOrderByStartDateDesc(pageable, progressStatus, area, LocalDate.now());
+        Map<String, List<String>> areaMap = new HashMap<>();
+
+        areaMap.put("경기/인천", List.of("경기", "인천"));
+        areaMap.put("강원", List.of("강원"));
+        areaMap.put("경남/부산", List.of("경남", "부산", "울산"));
+        areaMap.put("경북/대구", List.of("경북", "대구"));
+        areaMap.put("충청/대전", List.of("충북", "세종", "충남", "대전"));
+        areaMap.put("전라/광주", List.of("전남", "전북", "광주"));
+
+        List<String> selectedAreas = areaMap.getOrDefault(area, List.of(area)); // 기본값으로 area 사용
+
+        if (sortType.equals("popular")) {
+            exhibitionPage = exhibitionRepository.findExhibitionByOrderByTemperatureDesc(pageable, progressStatus, selectedAreas);
+        } else if (sortType.equals("recent")) {
+            exhibitionPage = exhibitionRepository.findExhibitionByOrderByStartDateDesc(pageable, progressStatus, selectedAreas, LocalDate.now());
+        } else {
+            exhibitionPage = exhibitionRepository.findExhibitionByOrderByTemperatureDesc(pageable, progressStatus, selectedAreas);
         }
 
         return exhibitionMapper.exhibitionPageToExhibitionRspDto(exhibitionPage, memberId);
